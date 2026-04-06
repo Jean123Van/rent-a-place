@@ -1,0 +1,15 @@
+.main-button {
+    background-color: white;
+    width: fit-content;
+    padding: 6px;
+    border: 1px solid var(--skintone);
+    margin-top: 20px;
+    font-size: 15px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.main-button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
