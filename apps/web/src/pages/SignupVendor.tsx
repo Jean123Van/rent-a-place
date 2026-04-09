@@ -31,6 +31,7 @@ export const SignupVendor = () => {
                         width: '100%',
                     }}
                 >
+                    <FormInput label="Username" />
                     <FormInput label="Email" />
                     <FormInput label="Password" />
                     <PrimaryButton>Sign up</PrimaryButton>
