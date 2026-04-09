@@ -3,6 +3,8 @@ import { Signup } from './pages/Signup';
 import { Login } from './pages/Login';
 import { Home } from './pages/Home';
 import { BookUnit } from './pages/BookUnit';
+import { SignupVendor } from './pages/SignupVendor';
+import { SigninVendor } from './pages/SigninVendor';
 function App() {
     return (
         <Router>
@@ -11,6 +13,8 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/book/:id" element={<BookUnit />} />
+                <Route path="/signup/vendor" element={<SignupVendor />} />
+                <Route path="/signin/vendor" element={<SigninVendor />} />
             </Routes>
         </Router>
     );
