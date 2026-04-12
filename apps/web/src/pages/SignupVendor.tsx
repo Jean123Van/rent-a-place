@@ -5,12 +5,17 @@ import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import { SmallNote } from '../components/Text/SmallNote';
 import { Controller, useForm } from 'react-hook-form';
 import type { SignupVendorInput } from '../utils/types';
+import { useMutation } from '@tanstack/react-query';
+import { signupVendor } from '../api/authentication';
+import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 
 export const SignupVendor = () => {
     const { control, handleSubmit } = useForm<SignupVendorInput>();
 
+    const { mutate, isPending } = useMutation({ mutationFn: signupVendor });
+
     const handleSignupClick = (data: SignupVendorInput) => {
-        console.log(data);
+        mutate(data);
     };
 
     return (
@@ -75,9 +80,15 @@ export const SignupVendor = () => {
                             />
                         )}
                     />
-                    <PrimaryButton onClick={handleSubmit(handleSignupClick)}>
-                        Sign up
-                    </PrimaryButton>
+                    {isPending ? (
+                        <LoadingSpinner />
+                    ) : (
+                        <PrimaryButton
+                            onClick={handleSubmit(handleSignupClick)}
+                        >
+                            Sign up
+                        </PrimaryButton>
+                    )}
                 </form>
                 <SmallNote>
                     Already have an account?{' '}
