@@ -3,6 +3,7 @@ import { COLORS } from '../../styles/colors';
 interface FormInputProps {
     label: string;
     value?: string;
+    isPassword?: boolean;
     onChange?: () => void;
 }
 
@@ -10,6 +11,7 @@ export const FormInput = ({
     label,
     value = '',
     onChange = () => {},
+    isPassword,
 }: FormInputProps) => {
     return (
         <div
@@ -23,6 +25,7 @@ export const FormInput = ({
         >
             <label htmlFor={label}>{label}</label>
             <input
+                type={isPassword ? 'password' : 'text'}
                 onChange={onChange}
                 placeholder={label}
                 id={label}
