@@ -2,9 +2,15 @@ import { COLORS } from '../../styles/colors';
 
 interface FormInputProps {
     label: string;
+    value?: string;
+    onChange?: () => void;
 }
 
-export const FormInput = ({ label }: FormInputProps) => {
+export const FormInput = ({
+    label,
+    value = '',
+    onChange = () => {},
+}: FormInputProps) => {
     return (
         <div
             style={{
@@ -17,8 +23,10 @@ export const FormInput = ({ label }: FormInputProps) => {
         >
             <label htmlFor={label}>{label}</label>
             <input
+                onChange={onChange}
                 placeholder={label}
                 id={label}
+                value={value}
                 style={{
                     border: 'none',
                     borderBottom: `2px solid ${COLORS.skintone}`,

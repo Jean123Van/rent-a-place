@@ -3,8 +3,16 @@ import { PrimaryButton } from '../components/button/PrimaryButton';
 import { FormInput } from '../components/input/FormInput';
 import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import { SmallNote } from '../components/Text/SmallNote';
+import { Controller, useForm } from 'react-hook-form';
+import type { SignupVendorInput } from '../utils/types';
 
 export const SignupVendor = () => {
+    const { control, handleSubmit } = useForm<SignupVendorInput>();
+
+    const handleSignupClick = (data: SignupVendorInput) => {
+        console.log(data);
+    };
+
     return (
         <div
             style={{
@@ -30,11 +38,46 @@ export const SignupVendor = () => {
                         alignItems: 'center',
                         width: '100%',
                     }}
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                    }}
                 >
-                    <FormInput label="Username" />
-                    <FormInput label="Email" />
-                    <FormInput label="Password" />
-                    <PrimaryButton>Sign up</PrimaryButton>
+                    <Controller
+                        name="username"
+                        control={control}
+                        render={({ field }) => (
+                            <FormInput
+                                label="Username"
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="email"
+                        control={control}
+                        render={({ field }) => (
+                            <FormInput
+                                label="Email"
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="password"
+                        control={control}
+                        render={({ field }) => (
+                            <FormInput
+                                label="Password"
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+                    <PrimaryButton onClick={handleSubmit(handleSignupClick)}>
+                        Sign up
+                    </PrimaryButton>
                 </form>
                 <SmallNote>
                     Already have an account?{' '}
