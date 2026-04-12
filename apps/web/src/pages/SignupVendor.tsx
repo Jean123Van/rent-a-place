@@ -12,7 +12,9 @@ import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSp
 export const SignupVendor = () => {
     const { control, handleSubmit } = useForm<SignupVendorInput>();
 
-    const { mutate, isPending } = useMutation({ mutationFn: signupVendor });
+    const { mutate, isPending, isSuccess } = useMutation({
+        mutationFn: signupVendor,
+    });
 
     const handleSignupClick = (data: SignupVendorInput) => {
         mutate(data);
@@ -31,69 +33,91 @@ export const SignupVendor = () => {
                 style={{
                     width: '100%',
                     maxWidth: '400px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
                 }}
             >
-                <form
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        width: '100%',
-                    }}
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                    }}
-                >
-                    <Controller
-                        name="username"
-                        control={control}
-                        render={({ field }) => (
-                            <FormInput
-                                label="Username"
-                                value={field.value}
-                                onChange={field.onChange}
-                            />
-                        )}
-                    />
-                    <Controller
-                        name="email"
-                        control={control}
-                        render={({ field }) => (
-                            <FormInput
-                                label="Email"
-                                value={field.value}
-                                onChange={field.onChange}
-                            />
-                        )}
-                    />
-                    <Controller
-                        name="password"
-                        control={control}
-                        render={({ field }) => (
-                            <FormInput
-                                label="Password"
-                                value={field.value}
-                                onChange={field.onChange}
-                            />
-                        )}
-                    />
-                    {isPending ? (
-                        <LoadingSpinner />
-                    ) : (
-                        <PrimaryButton
-                            onClick={handleSubmit(handleSignupClick)}
+                {isSuccess ? (
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <h3>Account created successfully!</h3>
+
+                        <h3>
+                            <Link to="/signin/vendor">Login here</Link>
+                        </h3>
+                    </div>
+                ) : (
+                    <div
+                        style={{
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <form
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                width: '100%',
+                            }}
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                            }}
                         >
-                            Sign up
-                        </PrimaryButton>
-                    )}
-                </form>
-                <SmallNote>
-                    Already have an account?{' '}
-                    <Link to="/signin/vendor">Login</Link> instead.
-                </SmallNote>
+                            <Controller
+                                name="username"
+                                control={control}
+                                render={({ field }) => (
+                                    <FormInput
+                                        label="Username"
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="email"
+                                control={control}
+                                render={({ field }) => (
+                                    <FormInput
+                                        label="Email"
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="password"
+                                control={control}
+                                render={({ field }) => (
+                                    <FormInput
+                                        label="Password"
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                )}
+                            />
+                            {isPending ? (
+                                <LoadingSpinner />
+                            ) : (
+                                <PrimaryButton
+                                    onClick={handleSubmit(handleSignupClick)}
+                                >
+                                    Sign up
+                                </PrimaryButton>
+                            )}
+                        </form>
+                        <SmallNote>
+                            Already have an account?{' '}
+                            <Link to="/signin/vendor">Login</Link> instead.
+                        </SmallNote>
+                    </div>
+                )}
             </ShadowedContainer>
         </div>
     );
