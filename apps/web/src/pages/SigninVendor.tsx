@@ -4,9 +4,24 @@ import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import { FormInput } from '../components/input/FormInput';
 import { SmallNote } from '../components/Text/SmallNote';
 import { useNavigate } from 'react-router-dom';
+import { Controller, useForm } from 'react-hook-form';
+import type { SigninVendorInput } from '../utils/types';
+import { useMutation } from '@tanstack/react-query';
+import { signinVendor } from '../api/authentication';
 
 export const SigninVendor = () => {
     const navigate = useNavigate();
+
+    const { control, handleSubmit } = useForm<SigninVendorInput>();
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: signinVendor,
+        onSuccess: () => navigate('/home'),
+    });
+
+    const handleSigninClick = (signinVendorInputData: SigninVendorInput) => {
+        mutate(signinVendorInputData);
+    };
 
     return (
         <div
@@ -37,12 +52,33 @@ export const SigninVendor = () => {
                         width: '100%',
                     }}
                 >
-                    <FormInput label="Email" />
-                    <FormInput label="Password" />
+                    <Controller
+                        control={control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormInput
+                                label="Email"
+                                onChange={field.onChange}
+                                value={field.value}
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormInput
+                                label="Password"
+                                onChange={field.onChange}
+                                value={field.value}
+                                isPassword
+                            />
+                        )}
+                    />
                     <PrimaryButton
-                        onClick={() => {
-                            navigate('/home');
-                        }}
+                        onClick={handleSubmit(handleSigninClick)}
+                        isLoading={isPending}
                     >
                         Log in
                     </PrimaryButton>

@@ -103,15 +103,12 @@ export const SignupVendor = () => {
                                     />
                                 )}
                             />
-                            {isPending ? (
-                                <LoadingSpinner />
-                            ) : (
-                                <PrimaryButton
-                                    onClick={handleSubmit(handleSignupClick)}
-                                >
-                                    Sign up
-                                </PrimaryButton>
-                            )}
+                            <PrimaryButton
+                                onClick={handleSubmit(handleSignupClick)}
+                                isLoading={isPending}
+                            >
+                                Sign up
+                            </PrimaryButton>
                         </form>
                         <SmallNote>
                             Already have an account?{' '}
