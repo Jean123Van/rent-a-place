@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { NavbarBtn } from '../components/button/NavbarBtn';
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import { COLORS } from '../styles/colors';
@@ -54,19 +53,6 @@ export const Home = () => {
 
     return (
         <div>
-            <div
-                style={{
-                    backgroundColor: COLORS.skintone,
-                    height: '40px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: '4px',
-                }}
-            >
-                <NavbarBtn isActive={true}>Cars</NavbarBtn>
-                <NavbarBtn>Transactions</NavbarBtn>
-            </div>
-
             <div
                 style={{
                     padding: '10px',
