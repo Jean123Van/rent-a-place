@@ -1,6 +1,14 @@
 import { COLORS } from '../../styles/colors';
 
-export const DateInput = () => {
+interface DateInputProps {
+    onChangeStartDate?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChangeEndDate?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const DateInput = ({
+    onChangeStartDate,
+    onChangeEndDate,
+}: DateInputProps) => {
     return (
         <div
             style={{
@@ -13,11 +21,11 @@ export const DateInput = () => {
         >
             <div>
                 <span>Start Date: </span>
-                <input type="date" />
+                <input type="date" onChange={onChangeStartDate} />
             </div>
             <div>
                 <span>End Date: </span>
-                <input type="date" />
+                <input type="date" onChange={onChangeEndDate} />
             </div>
         </div>
     );

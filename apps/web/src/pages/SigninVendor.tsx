@@ -84,7 +84,7 @@ export const SigninVendor = () => {
                                 label="Password"
                                 onChange={field.onChange}
                                 value={field.value}
-                                isPassword
+                                type={'password'}
                             />
                         )}
                     />

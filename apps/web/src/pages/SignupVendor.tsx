@@ -96,7 +96,7 @@ export const SignupVendor = () => {
                                 render={({ field }) => (
                                     <FormInput
                                         label="Password"
-                                        isPassword
+                                        type={'password'}
                                         value={field.value}
                                         onChange={field.onChange}
                                     />

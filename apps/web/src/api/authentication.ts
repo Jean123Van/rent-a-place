@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const signupVendor = async (signupVendorInput: SignupVendorInput) => {
     try {
-        return api.post('/auth/signup/vendor', signupVendorInput);
+        return await api.post('/auth/signup/vendor', signupVendorInput);
     } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
             console.log(e.response?.data);
@@ -18,7 +18,7 @@ export const signinVendor = async (
     signinVendorInputData: SigninVendorInput,
 ) => {
     try {
-        return api.post('/auth/signin/vendor', signinVendorInputData);
+        return await api.post('/auth/signin/vendor', signinVendorInputData);
     } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
             console.log(e.response?.data);
