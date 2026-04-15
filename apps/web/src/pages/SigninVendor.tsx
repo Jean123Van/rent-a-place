@@ -16,7 +16,10 @@ export const SigninVendor = () => {
 
     const { mutate, isPending } = useMutation({
         mutationFn: signinVendor,
-        onSuccess: () => navigate('/create-product'),
+        onSuccess: (data) => {
+            localStorage.setItem('vendor-token', data?.data.access_token);
+            navigate('/create-product');
+        },
     });
 
     const handleSigninClick = (signinVendorInputData: SigninVendorInput) => {

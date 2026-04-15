@@ -14,7 +14,13 @@ export const VendorHeader = () => {
     ];
 
     return (
-        <div>
+        <div
+            style={{
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+        >
             <header
                 style={{
                     borderBottom: `3px solid ${COLORS.skintone}`,
@@ -26,6 +32,7 @@ export const VendorHeader = () => {
             >
                 {routes.map((route) => (
                     <NavbarBtn
+                        key={route.title}
                         title={route.title}
                         isActive={location.pathname === route.route}
                         onClick={() => {
@@ -34,7 +41,7 @@ export const VendorHeader = () => {
                     />
                 ))}
             </header>
-            <main>
+            <main style={{ flex: '1' }}>
                 <Outlet />
             </main>
         </div>

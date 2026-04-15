@@ -1,8 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Signup } from './pages/Signup';
-import { Login } from './pages/Login';
-import { Home } from './pages/Home';
-import { BookUnit } from './pages/BookUnit';
 import { SignupVendor } from './pages/SignupVendor';
 import { SigninVendor } from './pages/SigninVendor';
 import { VendorHeader } from './components/Header/VendorHeader';
