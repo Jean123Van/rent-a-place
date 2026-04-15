@@ -1,5 +1,11 @@
 import { UserVendor } from 'src/authentication/entities/authentication.entity';
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+    Column,
+    Entity,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Product {
@@ -20,6 +26,9 @@ export class Product {
 
     @Column({ type: 'date' })
     endDate: Date;
+
+    @CreateDateColumn()
+    createdAt: Date;
 
     @ManyToOne(() => UserVendor, (vendor) => vendor.products, {
         onDelete: 'CASCADE',

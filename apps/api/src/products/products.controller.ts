@@ -1,4 +1,11 @@
-import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
+import {
+    Controller,
+    Post,
+    Body,
+    UseGuards,
+    Request,
+    Get,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductData } from './dto/create-product.dto';
 import { VendorAuthGuard } from 'src/authentication/guards/vendor-guard';
@@ -17,5 +24,11 @@ export class ProductsController {
             createProductData,
             req.user.id,
         );
+    }
+
+    @Get('/find-all')
+    @UseGuards(VendorAuthGuard)
+    getAllProducts(@Request() req) {
+        return this.productsService.getAllProducts(req.user.id);
     }
 }

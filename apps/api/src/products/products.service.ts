@@ -17,4 +17,11 @@ export class ProductsService {
             vendor: { id: userId },
         });
     }
+
+    getAllProducts(userId: string) {
+        return this.productRepository.find({
+            where: { vendor: { id: userId } },
+            order: { createdAt: 'DESC' },
+        });
+    }
 }
