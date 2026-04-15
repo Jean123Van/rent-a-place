@@ -8,11 +8,20 @@ import { Controller, useForm } from 'react-hook-form';
 import type { SigninVendorInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { signinVendor } from '../api/authentication';
+import { useEffect } from 'react';
 
 export const SigninVendor = () => {
     const navigate = useNavigate();
 
     const { control, handleSubmit } = useForm<SigninVendorInput>();
+
+    useEffect(() => {
+        const token = localStorage.getItem('vendor-token');
+
+        if (token) {
+            navigate('/create-product');
+        }
+    }, []);
 
     const { mutate, isPending } = useMutation({
         mutationFn: signinVendor,

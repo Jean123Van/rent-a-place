@@ -27,19 +27,34 @@ export const VendorHeader = () => {
                     padding: '10px',
                     display: 'flex',
                     flexDirection: 'row',
-                    gap: '5px',
+                    justifyContent: 'space-between',
                 }}
             >
-                {routes.map((route) => (
-                    <NavbarBtn
-                        key={route.title}
-                        title={route.title}
-                        isActive={location.pathname === route.route}
-                        onClick={() => {
-                            navigate(route.route);
-                        }}
-                    />
-                ))}
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '5px',
+                    }}
+                >
+                    {routes.map((route) => (
+                        <NavbarBtn
+                            key={route.title}
+                            title={route.title}
+                            isActive={location.pathname === route.route}
+                            onClick={() => {
+                                navigate(route.route);
+                            }}
+                        />
+                    ))}
+                </div>
+                <NavbarBtn
+                    title="Logout"
+                    onClick={() => {
+                        localStorage.removeItem('vendor-token');
+                        navigate('/signin/vendor');
+                    }}
+                />
             </header>
             <main style={{ flex: '1' }}>
                 <Outlet />

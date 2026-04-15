@@ -5,6 +5,7 @@ import { VendorHeader } from './components/Header/VendorHeader';
 import { CreateProduct } from './pages/CreateProduct';
 import { VendorProducts } from './pages/VendorProducts';
 import { VendorTransactions } from './pages/VendorTransactions';
+import { VendorProtectedGuard } from './components/guard/VendorProtectedGuard';
 function App() {
     return (
         <Router>
@@ -12,7 +13,13 @@ function App() {
                 <Route path="/signup/vendor" element={<SignupVendor />} />
                 <Route path="/signin/vendor" element={<SigninVendor />} />
 
-                <Route element={<VendorHeader />}>
+                <Route
+                    element={
+                        <VendorProtectedGuard>
+                            <VendorHeader />
+                        </VendorProtectedGuard>
+                    }
+                >
                     <Route
                         path="/create-product"
                         element={<CreateProduct />}

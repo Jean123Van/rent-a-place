@@ -23,6 +23,7 @@ export const CreateProduct = () => {
                 <FormInput label="Title" />
                 <FormInput label="Rate (php)" />
                 <FormInput label="Description" />
+                <input type="date" />
 
                 <div
                     style={{
