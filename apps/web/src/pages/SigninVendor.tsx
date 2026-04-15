@@ -16,7 +16,7 @@ export const SigninVendor = () => {
 
     const { mutate, isPending } = useMutation({
         mutationFn: signinVendor,
-        onSuccess: () => navigate('/home'),
+        onSuccess: () => navigate('/create-product'),
     });
 
     const handleSigninClick = (signinVendorInputData: SigninVendorInput) => {

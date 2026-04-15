@@ -1,10 +1,18 @@
 .navbar-btn {
-    background-color: white;
-    border: 2px solid var(--skintone);
     border-radius: 3px;
     padding: 5px;
     font-size: 15px;
+    border: 2px solid var(--skintone);
     transition: 0.1s ease;
+}
+
+.navbar-btn-inactive {
+    background-color: white;
+}
+
+.navbar-btn-active {
+    background-color: var(--skintone);
+    color: white;
 }
 
 .navbar-btn:hover {

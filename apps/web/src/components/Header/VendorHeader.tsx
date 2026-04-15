@@ -1,12 +1,16 @@
 import { Outlet } from 'react-router-dom';
 import { COLORS } from '../../styles/colors';
 import { NavbarBtn } from '../button/NavbarBtn';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const VendorHeader = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const routes = [
-        { title: 'Create product', route: '' },
-        { title: 'Products', route: '' },
-        { title: 'Transactions', route: '' },
+        { title: 'Create product', route: '/create-product' },
+        { title: 'Products', route: '/vendor/products' },
+        { title: 'Transactions', route: '/vendor/transactions' },
     ];
 
     return (
@@ -21,7 +25,13 @@ export const VendorHeader = () => {
                 }}
             >
                 {routes.map((route) => (
-                    <NavbarBtn title={route.title} />
+                    <NavbarBtn
+                        title={route.title}
+                        isActive={location.pathname === route.route}
+                        onClick={() => {
+                            navigate(route.route);
+                        }}
+                    />
                 ))}
             </header>
             <main>
