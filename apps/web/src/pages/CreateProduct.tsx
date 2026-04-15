@@ -8,9 +8,15 @@ import { useMutation } from '@tanstack/react-query';
 import { createProduct } from '../api/ products';
 
 export const CreateProduct = () => {
-    const { control, handleSubmit, setValue } = useForm<CreateProductInput>();
+    const { control, handleSubmit, setValue, reset } =
+        useForm<CreateProductInput>();
 
-    const { mutate, isPending } = useMutation({ mutationFn: createProduct });
+    const { mutate, isPending, isSuccess } = useMutation({
+        mutationFn: createProduct,
+        onSuccess: () => {
+            reset();
+        },
+    });
 
     const handleCreateProductBtn = (createProductInput: CreateProductInput) => {
         mutate(createProductInput);
@@ -82,7 +88,11 @@ export const CreateProduct = () => {
                 <div
                     style={{
                         justifyContent: 'center',
+                        alignItems: 'center',
                         display: 'flex',
+                        flexDirection: 'column',
+
+                        gap: '10px',
                     }}
                 >
                     <PrimaryButton
@@ -91,6 +101,21 @@ export const CreateProduct = () => {
                     >
                         Create
                     </PrimaryButton>
+                    {isSuccess && (
+                        <span
+                            style={{
+                                textAlign: 'center',
+                                color: 'green',
+                                fontSize: '15px',
+                                border: '2px solid green',
+                                padding: '5px',
+                                borderRadius: '5px',
+                            }}
+                        >
+                            Successfully created product! Add another product or
+                            view created product in Products tab
+                        </span>
+                    )}
                 </div>
             </ShadowedContainer>
         </div>
