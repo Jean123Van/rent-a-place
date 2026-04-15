@@ -1,9 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Product } from 'src/products/entities/products.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class UserVendor {
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column({ unique: true })
     username: string;
@@ -13,4 +14,7 @@ export class UserVendor {
 
     @Column()
     password: string;
+
+    @OneToMany(() => Product, (product) => product.vendor)
+    products: Product[];
 }

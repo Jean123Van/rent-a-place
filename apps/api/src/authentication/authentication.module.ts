@@ -4,6 +4,8 @@ import { AuthenticationController } from './authentication.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserVendor } from './entities/authentication.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { VendorJwtStrategy } from './strategy/vendor-jwt.strategy';
+import { UserJwtStrategy } from './strategy/user-jwt.strategy';
 
 @Module({
     imports: [
@@ -13,6 +15,6 @@ import { JwtModule } from '@nestjs/jwt';
         }),
     ],
     controllers: [AuthenticationController],
-    providers: [AuthenticationService],
+    providers: [AuthenticationService, VendorJwtStrategy, UserJwtStrategy],
 })
 export class AuthenticationModule {}

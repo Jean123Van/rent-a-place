@@ -1,5 +1,6 @@
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { ShadowedContainer } from '../components/container/ShadowedContainer';
+import { DateInput } from '../components/input/DateInput';
 import { FormInput } from '../components/input/FormInput';
 
 export const CreateProduct = () => {
@@ -23,7 +24,7 @@ export const CreateProduct = () => {
                 <FormInput label="Title" />
                 <FormInput label="Rate (php)" />
                 <FormInput label="Description" />
-                <input type="date" />
+                <DateInput />
 
                 <div
                     style={{
