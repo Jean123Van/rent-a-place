@@ -1,15 +1,13 @@
 import { useForm, Controller } from 'react-hook-form';
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { ShadowedContainer } from '../components/container/ShadowedContainer';
-import { DateInput } from '../components/input/DateInput';
 import { FormInput } from '../components/input/FormInput';
 import type { CreateProductInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { createProduct } from '../api/ products';
 
 export const CreateProduct = () => {
-    const { control, handleSubmit, setValue, reset } =
-        useForm<CreateProductInput>();
+    const { control, handleSubmit, reset } = useForm<CreateProductInput>();
 
     const { mutate, isPending, isSuccess } = useMutation({
         mutationFn: createProduct,
@@ -74,15 +72,6 @@ export const CreateProduct = () => {
                             onChange={field.onChange}
                         />
                     )}
-                />
-
-                <DateInput
-                    onChangeStartDate={(e) => {
-                        setValue('startDate', e.target.value);
-                    }}
-                    onChangeEndDate={(e) => {
-                        setValue('endDate', e.target.value);
-                    }}
                 />
 
                 <div

@@ -21,12 +21,6 @@ export class Product {
     @Column()
     description: string;
 
-    @Column({ type: 'date' })
-    startDate: Date;
-
-    @Column({ type: 'date' })
-    endDate: Date;
-
     @CreateDateColumn()
     createdAt: Date;
 

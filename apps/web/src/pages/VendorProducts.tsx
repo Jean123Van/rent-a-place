@@ -3,6 +3,7 @@ import { getAllProducts } from '../api/ products';
 import type { ProductData } from '../utils/types';
 import { COLORS } from '../styles/colors';
 import placeholder from '../assets/product-placeholder.png';
+import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 
 const Title = ({ value }: { value: string }) => {
     return (
@@ -20,7 +21,20 @@ export const VendorProducts = () => {
         queryFn: getAllProducts,
     });
 
-    console.log(data?.data);
+    if (isLoading) {
+        return (
+            <div
+                style={{
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <LoadingSpinner />
+            </div>
+        );
+    }
 
     return (
         <div

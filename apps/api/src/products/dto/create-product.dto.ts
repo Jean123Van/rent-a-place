@@ -9,10 +9,4 @@ export class CreateProductData {
 
     @IsNotEmpty()
     description: string;
-
-    @IsDateString()
-    startDate: Date;
-
-    @IsDateString()
-    endDate: Date;
 }
