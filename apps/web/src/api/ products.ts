@@ -16,3 +16,11 @@ export const createProduct = async (createProductInput: CreateProductInput) => {
         }
     }
 };
+
+export const getAllProducts = async () => {
+    try {
+        return await api.get('/products/find-all');
+    } catch (e) {
+        console.log(e);
+    }
+};

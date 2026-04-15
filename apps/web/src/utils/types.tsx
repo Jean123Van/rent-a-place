@@ -16,3 +16,8 @@ export interface CreateProductInput {
     startDate: string;
     endDate: string;
 }
+
+export interface ProductData extends CreateProductInput {
+    id: string;
+    createdAt: Date;
+}
