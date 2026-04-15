@@ -7,7 +7,6 @@ import { Controller, useForm } from 'react-hook-form';
 import type { SignupVendorInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { signupVendor } from '../api/authentication';
-import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 
 export const SignupVendor = () => {
     const { control, handleSubmit } = useForm<SignupVendorInput>();
