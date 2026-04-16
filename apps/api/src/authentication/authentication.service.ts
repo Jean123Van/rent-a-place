@@ -1,18 +1,22 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignupVendorData } from './dto/signup-vendor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserVendor } from './entities/authentication.entity';
+import { UserVendor } from './entities/user-vendor.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { SigninVendorData } from './dto/signin-vendor.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserTypes } from 'src/utils/types/user-types';
+import { SignupData } from './dto/signup.dto';
+import { UserCustomer } from './entities/user-customer.entity';
 
 @Injectable()
 export class AuthenticationService {
     constructor(
         @InjectRepository(UserVendor)
         private userVendorRepository: Repository<UserVendor>,
+        @InjectRepository(UserCustomer)
+        private userCustomerRepository: Repository<UserCustomer>,
         private jwtService: JwtService,
     ) {}
 
@@ -57,5 +61,17 @@ export class AuthenticationService {
         return {
             access_token: token,
         };
+    }
+
+    async signup(signupData: SignupData) {
+        const { password, ...rest } = signupData;
+
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        return this.userCustomerRepository.save({
+            ...rest,
+            password: hashedPassword,
+        });
     }
 }

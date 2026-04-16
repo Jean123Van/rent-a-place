@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserVendor } from './authentication/entities/authentication.entity';
+import { UserVendor } from './authentication/entities/user-vendor.entity';
 import { Product } from './products/entities/products.entity';
 import { ProductsModule } from './products/products.module';
+import { UserCustomer } from './authentication/entities/user-customer.entity';
 
 @Module({
     imports: [
@@ -16,7 +17,7 @@ import { ProductsModule } from './products/products.module';
             username: 'postgres',
             password: 'jean',
             database: 'BookingService',
-            entities: [UserVendor, Product],
+            entities: [UserVendor, Product, UserCustomer],
             synchronize: true,
         }),
     ],

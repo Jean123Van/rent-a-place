@@ -1,4 +1,4 @@
-import { UserVendor } from 'src/authentication/entities/authentication.entity';
+import { UserVendor } from 'src/authentication/entities/user-vendor.entity';
 import {
     Column,
     Entity,

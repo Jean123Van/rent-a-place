@@ -1,4 +1,8 @@
-import type { SigninVendorInput, SignupVendorInput } from '../utils/types';
+import type {
+    SigninVendorInput,
+    SignupInput,
+    SignupVendorInput,
+} from '../utils/types';
 import { api } from './base';
 import axios from 'axios';
 
@@ -19,6 +23,18 @@ export const signinVendor = async (
 ) => {
     try {
         return await api.post('/auth/signin/vendor', signinVendorInputData);
+    } catch (e: unknown) {
+        if (axios.isAxiosError(e)) {
+            console.log(e.response?.data);
+        } else {
+            console.log(e);
+        }
+    }
+};
+
+export const signup = async (signupInput: SignupInput) => {
+    try {
+        return await api.post('/auth/signup', signupInput);
     } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
             console.log(e.response?.data);

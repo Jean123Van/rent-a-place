@@ -6,10 +6,13 @@ import { CreateProduct } from './pages/CreateProduct';
 import { VendorProducts } from './pages/VendorProducts';
 import { VendorTransactions } from './pages/VendorTransactions';
 import { VendorProtectedGuard } from './components/guard/VendorProtectedGuard';
+import { Signup } from './pages/Signup';
 function App() {
     return (
         <Router>
             <Routes>
+                <Route path="/signup" element={<Signup />} />
+
                 <Route path="/signup/vendor" element={<SignupVendor />} />
                 <Route path="/signin/vendor" element={<SigninVendor />} />
 

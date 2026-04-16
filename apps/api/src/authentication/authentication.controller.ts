@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { SignupVendorData } from './dto/signup-vendor.dto';
 import { SigninVendorData } from './dto/signin-vendor.dto';
+import { SignupData } from './dto/signup.dto';
 
 @Controller('auth')
 export class AuthenticationController {
@@ -17,5 +18,10 @@ export class AuthenticationController {
     @Post('/signin/vendor')
     signinVendor(@Body() signinVendorData: SigninVendorData) {
         return this.authenticationService.signinVendor(signinVendorData);
+    }
+
+    @Post('/signup')
+    signup(@Body() signupData: SignupData) {
+        return this.authenticationService.signup(signupData);
     }
 }
