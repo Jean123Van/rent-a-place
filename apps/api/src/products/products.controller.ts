@@ -9,6 +9,7 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductData } from './dto/create-product.dto';
 import { VendorAuthGuard } from 'src/authentication/guards/vendor-guard';
+import { UserAuthGuard } from 'src/authentication/guards/user-guard';
 
 @Controller('products')
 export class ProductsController {
@@ -30,5 +31,11 @@ export class ProductsController {
     @UseGuards(VendorAuthGuard)
     getAllProducts(@Request() req) {
         return this.productsService.getAllProducts(req.user.id);
+    }
+
+    @Get('/find-all/vendors')
+    @UseGuards(UserAuthGuard)
+    getAllVendors() {
+        return this.productsService.getAllVendors();
     }
 }

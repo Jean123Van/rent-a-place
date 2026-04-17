@@ -1,5 +1,11 @@
 import { Product } from 'src/products/entities/products.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    OneToMany,
+    CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class UserVendor {
@@ -14,6 +20,9 @@ export class UserVendor {
 
     @Column()
     password: string;
+
+    @CreateDateColumn()
+    createdAt: Date;
 
     @OneToMany(() => Product, (product) => product.vendor)
     products: Product[];
