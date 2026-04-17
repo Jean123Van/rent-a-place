@@ -1,4 +1,5 @@
 import type {
+    SigninInput,
     SigninVendorInput,
     SignupInput,
     SignupVendorInput,
@@ -35,6 +36,18 @@ export const signinVendor = async (
 export const signup = async (signupInput: SignupInput) => {
     try {
         return await api.post('/auth/signup', signupInput);
+    } catch (e: unknown) {
+        if (axios.isAxiosError(e)) {
+            console.log(e.response?.data);
+        } else {
+            console.log(e);
+        }
+    }
+};
+
+export const signin = async (signinInput: SigninInput) => {
+    try {
+        return await api.post('/auth/signin', signinInput);
     } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
             console.log(e.response?.data);

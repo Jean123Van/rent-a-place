@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserTypes } from 'src/utils/types/user-types';
 import { SignupData } from './dto/signup.dto';
 import { UserCustomer } from './entities/user-customer.entity';
+import { SigninData } from './dto/signin.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -73,5 +74,36 @@ export class AuthenticationService {
             ...rest,
             password: hashedPassword,
         });
+    }
+
+    async signin(signinData: SigninData) {
+        const { email, password } = signinData;
+
+        const customer = await this.userCustomerRepository.findOne({
+            where: { email },
+        });
+
+        if (!customer) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
+
+        const isMatch = await bcrypt.compare(password, customer.password);
+
+        if (!isMatch) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
+
+        const payload = {
+            id: customer.id,
+            type: UserTypes.USER,
+        };
+
+        const token = this.jwtService.sign(payload, {
+            secret: 'user-secret',
+        });
+
+        return {
+            access_token: token,
+        };
     }
 }

@@ -15,6 +15,11 @@ export interface SigninVendorInput {
     password: string;
 }
 
+export interface SigninInput {
+    email: string;
+    password: string;
+}
+
 export interface CreateProductInput {
     title: string;
     rate: string;
