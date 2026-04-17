@@ -5,6 +5,7 @@ import {
     UseGuards,
     Request,
     Get,
+    Param,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductData } from './dto/create-product.dto';
@@ -37,5 +38,11 @@ export class ProductsController {
     @UseGuards(UserAuthGuard)
     getAllVendors() {
         return this.productsService.getAllVendors();
+    }
+
+    @Get('/vendor/:vendorId')
+    @UseGuards(UserAuthGuard)
+    getProductsByVendor(@Param('vendorId') vendorId: string) {
+        return this.productsService.getAllProducts(vendorId);
     }
 }

@@ -12,6 +12,7 @@ import { UserHeader } from './components/Header/UserHeader';
 import { CustomerProducts } from './pages/CustomerProducts';
 import { CustomerTransactions } from './pages/CustomerTransactions';
 import { CustomerProtectedGuard } from './components/guard/CustomerProtectedGuard';
+import { VendorProductList } from './pages/VendorProductList';
 function App() {
     return (
         <Router>
@@ -29,6 +30,10 @@ function App() {
                     <Route
                         path="/customer/vendor-list"
                         element={<CustomerProducts />}
+                    />
+                    <Route
+                        path="customer/vendor-list/:vendorId"
+                        element={<VendorProductList />}
                     />
                     <Route
                         path="/customer/transactions"

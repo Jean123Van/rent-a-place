@@ -4,8 +4,12 @@ import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSp
 import placeholder from '../assets/product-placeholder.png';
 import type { VendorData } from '../utils/types';
 import { COLORS } from '../styles/colors';
+import { PrimaryButton } from '../components/button/PrimaryButton';
+import { useNavigate } from 'react-router-dom';
 
 export const CustomerProducts = () => {
+    const navigate = useNavigate();
+
     const { isLoading, data } = useQuery({
         queryKey: ['get-all', 'vendors'],
         queryFn: getAllVendors,
@@ -41,7 +45,6 @@ export const CustomerProducts = () => {
                         border: `1px solid ${COLORS.skintone}`,
                         borderRadius: '10px',
                         maxWidth: '400px',
-                        height: '350px',
                         padding: '10px',
                         display: 'flex',
                         flexDirection: 'column',
@@ -61,6 +64,13 @@ export const CustomerProducts = () => {
                     <span style={{ fontWeight: 'bold' }}>
                         {vendor.username}
                     </span>
+                    <PrimaryButton
+                        onClick={() => {
+                            navigate('/customer/vendor-list/' + vendor.id);
+                        }}
+                    >
+                        See Products
+                    </PrimaryButton>
                 </div>
             ))}
         </div>

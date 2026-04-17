@@ -47,7 +47,7 @@ export const BaseHeader = ({ routes, type }: BaseHeaderProps) => {
                         <NavbarBtn
                             key={route.title}
                             title={route.title}
-                            isActive={location.pathname === route.route}
+                            isActive={location.pathname.includes(route.route)}
                             onClick={() => {
                                 navigate(route.route);
                             }}
@@ -71,7 +71,12 @@ export const BaseHeader = ({ routes, type }: BaseHeaderProps) => {
                     }}
                 />
             </header>
-            <main style={{ flex: '1' }}>
+            <main
+                style={{
+                    flex: '1',
+                    position: 'relative',
+                }}
+            >
                 <Outlet />
             </main>
         </div>
