@@ -2,6 +2,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { COLORS } from '../../styles/colors';
 import { NavbarBtn } from '../button/NavbarBtn';
 import { UserTypes } from '../../utils/types';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface RouteType {
     title: string;
@@ -16,6 +17,7 @@ interface BaseHeaderProps {
 export const BaseHeader = ({ routes, type }: BaseHeaderProps) => {
     const location = useLocation();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     return (
         <div
@@ -64,6 +66,8 @@ export const BaseHeader = ({ routes, type }: BaseHeaderProps) => {
                             localStorage.removeItem('vendor-token');
                             navigate('/signin/vendor');
                         }
+
+                        queryClient.clear();
                     }}
                 />
             </header>

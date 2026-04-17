@@ -14,3 +14,18 @@ api.interceptors.request.use((config) => {
     }
     return config;
 });
+
+export const apiCustomer = axios.create({
+    baseURL: 'http://localhost:3000',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
+apiCustomer.interceptors.request.use((config) => {
+    const token = localStorage.getItem('customer-token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});

@@ -31,6 +31,13 @@ export interface ProductData extends CreateProductInput {
     createdAt: Date;
 }
 
+export interface VendorData {
+    id: string;
+    email: string;
+    username: string;
+    createdAt: Date;
+}
+
 export enum UserTypes {
     VENDOR = 'vendor',
     USER = 'user',
