@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { CreateProductInput } from '../utils/types';
+import type { BookProductInput, CreateProductInput } from '../utils/types';
 import { api, apiCustomer } from './base';
 
 export const createProduct = async (createProductInput: CreateProductInput) => {
@@ -32,3 +32,17 @@ export const getProductsByVendor = async (vendorId: string) => {
         console.log(e);
     }
 };
+
+export const bookProduct = async (bookProductInput: BookProductInput) => {
+    try {
+        return await apiCustomer.post('/products/book', bookProductInput);
+    } catch (e: unknown) {
+        if (axios.isAxiosError(e)) {
+            console.log(e.response?.data);
+        } else {
+            console.log(e);
+        }
+    }
+};
+
+export const getUserBookingsByVendor = async () => {};

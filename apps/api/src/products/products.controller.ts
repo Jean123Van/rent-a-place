@@ -38,7 +38,6 @@ export class ProductsController {
     @Post('/book')
     @UseGuards(UserAuthGuard)
     bookProduct(@Body() bookProductInput: BookProductData, @Request() req) {
-        console.log(req.user);
         return this.productsService.bookProduct(req.user.id, bookProductInput);
     }
 
@@ -52,5 +51,17 @@ export class ProductsController {
     @UseGuards(UserAuthGuard)
     getProductsByVendor(@Param('vendorId') vendorId: string) {
         return this.productsService.getAllProducts(vendorId);
+    }
+
+    @Get('/vendor/customer/:vendorId')
+    @UseGuards(UserAuthGuard)
+    getUserBookingsByVendor(
+        @Param('vendorId') vendorId: string,
+        @Request() req,
+    ) {
+        return this.productsService.getUserBookingsByVendor(
+            vendorId,
+            req.user.id,
+        );
     }
 }

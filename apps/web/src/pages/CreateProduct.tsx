@@ -5,6 +5,7 @@ import { FormInput } from '../components/input/FormInput';
 import type { CreateProductInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { createProduct } from '../api/ products';
+import { SuccessModal } from '../components/Modal/SuccessModal';
 
 export const CreateProduct = () => {
     const { control, handleSubmit, reset } = useForm<CreateProductInput>();
@@ -90,21 +91,7 @@ export const CreateProduct = () => {
                     >
                         Create
                     </PrimaryButton>
-                    {isSuccess && (
-                        <span
-                            style={{
-                                textAlign: 'center',
-                                color: 'green',
-                                fontSize: '15px',
-                                border: '2px solid green',
-                                padding: '5px',
-                                borderRadius: '5px',
-                            }}
-                        >
-                            Successfully created product! Add another product or
-                            view created product in Products tab
-                        </span>
-                    )}
+                    <SuccessModal isSuccess={isSuccess} />
                 </div>
             </ShadowedContainer>
         </div>

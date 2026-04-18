@@ -1,14 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { getProductsByVendor } from '../api/ products';
+import { bookProduct, getProductsByVendor } from '../api/ products';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
-import type { ProductData } from '../utils/types';
+import { type BookProductInput, type ProductData } from '../utils/types';
 import { COLORS } from '../styles/colors';
 import placeholder from '../assets/product-placeholder.png';
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { useState } from 'react';
 import { DateInput } from '../components/input/DateInput';
 import { FormInput } from '../components/input/FormInput';
+import { Controller, useForm } from 'react-hook-form';
+import { SuccessModal } from '../components/Modal/SuccessModal';
 
 const Title = ({ value }: { value: string }) => {
     return (
@@ -25,10 +27,22 @@ export const VendorProductList = () => {
 
     const [productId, setProductId] = useState<string | undefined>(undefined);
 
+    const { handleSubmit, control, setValue } = useForm<BookProductInput>({
+        defaultValues: { vendorId },
+    });
+
+    const { isPending, mutate, isSuccess } = useMutation({
+        mutationFn: bookProduct,
+    });
+
     const { isLoading, data } = useQuery({
         queryKey: ['vendor', 'product', 'list'],
         queryFn: () => getProductsByVendor(vendorId!),
     });
+
+    const handleBookBtn = (bookProductInput: BookProductInput) => {
+        mutate({ ...bookProductInput, productId: productId! });
+    };
 
     if (isLoading) {
         return (
@@ -77,9 +91,33 @@ export const VendorProductList = () => {
                         }}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <DateInput />
-                        <FormInput label="Additional note" />
-                        <PrimaryButton>Book</PrimaryButton>
+                        <DateInput
+                            onChangeStartDate={(e) => {
+                                setValue('startDate', e.target.value);
+                            }}
+                            onChangeEndDate={(e) => {
+                                setValue('endDate', e.target.value);
+                            }}
+                        />
+                        <Controller
+                            control={control}
+                            name="additionalNote"
+                            render={({ field }) => (
+                                <FormInput
+                                    label="Additional note"
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                />
+                            )}
+                        />
+
+                        <PrimaryButton
+                            isLoading={isPending}
+                            onClick={handleSubmit(handleBookBtn)}
+                        >
+                            Book
+                        </PrimaryButton>
+                        <SuccessModal isSuccess={isSuccess} />
                     </div>
                 </div>
             )}

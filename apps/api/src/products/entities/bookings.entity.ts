@@ -21,7 +21,7 @@ export class Booking {
     startDate: Date;
 
     @Column()
-    endDate: string;
+    endDate: Date;
 
     @CreateDateColumn()
     createdAt: Date;
