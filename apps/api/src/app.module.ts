@@ -5,6 +5,7 @@ import { UserVendor } from './authentication/entities/user-vendor.entity';
 import { Product } from './products/entities/products.entity';
 import { ProductsModule } from './products/products.module';
 import { UserCustomer } from './authentication/entities/user-customer.entity';
+import { Booking } from './products/entities/bookings.entity';
 
 @Module({
     imports: [
@@ -17,7 +18,7 @@ import { UserCustomer } from './authentication/entities/user-customer.entity';
             username: 'postgres',
             password: 'jean',
             database: 'BookingService',
-            entities: [UserVendor, Product, UserCustomer],
+            entities: [UserVendor, Product, UserCustomer, Booking],
             synchronize: true,
         }),
     ],

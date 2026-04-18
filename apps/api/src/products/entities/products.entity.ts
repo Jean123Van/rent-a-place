@@ -5,7 +5,9 @@ import {
     PrimaryGeneratedColumn,
     ManyToOne,
     CreateDateColumn,
+    OneToMany,
 } from 'typeorm';
+import { Booking } from './bookings.entity';
 
 @Entity()
 export class Product {
@@ -28,4 +30,7 @@ export class Product {
         onDelete: 'CASCADE',
     })
     vendor: UserVendor;
+
+    @OneToMany(() => Booking, (booking) => booking.product)
+    booking: Booking[];
 }

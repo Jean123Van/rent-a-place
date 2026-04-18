@@ -97,7 +97,7 @@ export const Signin = () => {
                 </form>
                 <SmallNote>
                     Don't have an account yet? Signup{' '}
-                    <Link to="/signin">here</Link>.
+                    <Link to="/signup">here</Link>.
                 </SmallNote>
             </ShadowedContainer>
         </div>

@@ -4,6 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
 import { Repository } from 'typeorm';
 import { UserVendor } from 'src/authentication/entities/user-vendor.entity';
+import { BookProductData } from './dto/book-product.dto';
+import { Booking } from './entities/bookings.entity';
 
 @Injectable()
 export class ProductsService {
@@ -12,6 +14,8 @@ export class ProductsService {
         private productRepository: Repository<Product>,
         @InjectRepository(UserVendor)
         private userVendorRepository: Repository<UserVendor>,
+        @InjectRepository(Booking)
+        private bookingRepository: Repository<Booking>,
     ) {}
 
     createProduct(createProductData: CreateProductData, userId: string) {
@@ -30,5 +34,16 @@ export class ProductsService {
 
     getAllVendors() {
         return this.userVendorRepository.find({ order: { createdAt: 'DESC' } });
+    }
+
+    bookProduct(userId: string, bookProductInput: BookProductData) {
+        const { productId, vendorId, ...rest } = bookProductInput;
+
+        return this.bookingRepository.save({
+            ...rest,
+            customer: { id: userId },
+            vendor: { id: vendorId },
+            product: { id: productId },
+        });
     }
 }

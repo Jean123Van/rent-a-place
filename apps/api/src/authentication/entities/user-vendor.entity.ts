@@ -1,3 +1,4 @@
+import { Booking } from 'src/products/entities/bookings.entity';
 import { Product } from 'src/products/entities/products.entity';
 import {
     Entity,
@@ -26,4 +27,7 @@ export class UserVendor {
 
     @OneToMany(() => Product, (product) => product.vendor)
     products: Product[];
+
+    @OneToMany(() => Booking, (booking) => booking.vendor)
+    booking: Booking[];
 }

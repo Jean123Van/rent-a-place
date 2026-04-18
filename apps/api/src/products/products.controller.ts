@@ -11,6 +11,7 @@ import { ProductsService } from './products.service';
 import { CreateProductData } from './dto/create-product.dto';
 import { VendorAuthGuard } from 'src/authentication/guards/vendor-guard';
 import { UserAuthGuard } from 'src/authentication/guards/user-guard';
+import { BookProductData } from './dto/book-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -32,6 +33,13 @@ export class ProductsController {
     @UseGuards(VendorAuthGuard)
     getAllProducts(@Request() req) {
         return this.productsService.getAllProducts(req.user.id);
+    }
+
+    @Post('/book')
+    @UseGuards(UserAuthGuard)
+    bookProduct(@Body() bookProductInput: BookProductData, @Request() req) {
+        console.log(req.user);
+        return this.productsService.bookProduct(req.user.id, bookProductInput);
     }
 
     @Get('/find-all/vendors')
