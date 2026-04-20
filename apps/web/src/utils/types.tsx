@@ -43,10 +43,20 @@ export enum UserTypes {
     USER = 'user',
 }
 
-export interface BookProductInput {
+export interface BaseBooking {
     additionalNote: string;
     startDate: string;
     endDate: string;
+}
+
+export interface BookProductInput extends BaseBooking {
     productId: string;
     vendorId: string;
+}
+
+export interface UserBooking extends BaseBooking {
+    id: string;
+    createdAt: string;
+    vendor: VendorData;
+    product: ProductData;
 }
