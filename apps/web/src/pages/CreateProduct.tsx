@@ -4,7 +4,7 @@ import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import { FormInput } from '../components/input/FormInput';
 import type { CreateProductInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
-import { createProduct } from '../api/ products';
+import { createProduct } from '../api/products';
 import { SuccessModal } from '../components/Modal/SuccessModal';
 
 export const CreateProduct = () => {

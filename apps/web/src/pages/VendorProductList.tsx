@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { bookProduct, getProductsByVendor } from '../api/ products';
+import { bookProduct, getProductsByVendor } from '../api/products';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 import { type BookProductInput, type ProductData } from '../utils/types';
 import { COLORS } from '../styles/colors';

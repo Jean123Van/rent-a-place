@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAllProducts } from '../api/ products';
+import { getAllProducts } from '../api/products';
 import type { ProductData } from '../utils/types';
 import { COLORS } from '../styles/colors';
 import placeholder from '../assets/product-placeholder.png';

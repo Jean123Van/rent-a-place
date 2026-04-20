@@ -45,4 +45,10 @@ export const bookProduct = async (bookProductInput: BookProductInput) => {
     }
 };
 
-export const getUserBookingsByVendor = async () => {};
+export const getUserBookings = async () => {
+    try {
+        return await apiCustomer.get('/products/bookings/customer');
+    } catch (e) {
+        console.log(e);
+    }
+};
