@@ -54,4 +54,12 @@ export class ProductsService {
             order: { createdAt: 'DESC' },
         });
     }
+
+    getBookingsByVendor(vendorId: string) {
+        return this.bookingRepository.find({
+            where: { vendor: { id: vendorId } },
+            order: { createdAt: 'DESC' },
+            relations: ['customer', 'product'],
+        });
+    }
 }

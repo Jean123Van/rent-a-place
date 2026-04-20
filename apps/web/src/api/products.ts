@@ -52,3 +52,11 @@ export const getUserBookings = async () => {
         console.log(e);
     }
 };
+
+export const getVendorBookings = async () => {
+    try {
+        return await api.get('/products/bookings/vendor');
+    } catch (e) {
+        console.log(e);
+    }
+};

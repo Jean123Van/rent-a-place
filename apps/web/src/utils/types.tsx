@@ -60,3 +60,16 @@ export interface UserBooking extends BaseBooking {
     vendor: VendorData;
     product: ProductData;
 }
+
+export interface Customer {
+    id: string;
+    username: string;
+    email: string;
+}
+
+export interface VendorBooking extends BaseBooking {
+    id: string;
+    createdAt: string;
+    product: ProductData;
+    customer: Customer;
+}

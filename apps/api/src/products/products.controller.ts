@@ -58,4 +58,10 @@ export class ProductsController {
     getBookingsByCustomer(@Request() req) {
         return this.productsService.getBookingsByCustomer(req.user.id);
     }
+
+    @Get('/bookings/vendor')
+    @UseGuards(VendorAuthGuard)
+    getBookingsByVendor(@Request() req) {
+        return this.productsService.getBookingsByVendor(req.user.id);
+    }
 }
