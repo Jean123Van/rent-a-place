@@ -7,9 +7,19 @@ import { Controller, useForm } from 'react-hook-form';
 import type { SignupVendorInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { signupVendor } from '../api/authentication';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signupVendorFormSchema } from '../utils/schema/signupVendorFormSchema';
 
 export const SignupVendor = () => {
-    const { control, handleSubmit } = useForm<SignupVendorInput>();
+    const { control, handleSubmit } = useForm<SignupVendorInput>({
+        resolver: zodResolver(signupVendorFormSchema),
+        criteriaMode: 'all',
+        defaultValues: {
+            username: '',
+            email: '',
+            password: '',
+        },
+    });
 
     const { mutate, isPending, isSuccess } = useMutation({
         mutationFn: signupVendor,
@@ -71,34 +81,49 @@ export const SignupVendor = () => {
                             <Controller
                                 name="username"
                                 control={control}
-                                render={({ field }) => (
+                                render={({ field, fieldState: { error } }) => (
                                     <FormInput
                                         label="Username"
                                         value={field.value}
                                         onChange={field.onChange}
+                                        error={
+                                            Object.values(
+                                                error?.types || [],
+                                            ).flat() as string[]
+                                        }
                                     />
                                 )}
                             />
                             <Controller
                                 name="email"
                                 control={control}
-                                render={({ field }) => (
+                                render={({ field, fieldState: { error } }) => (
                                     <FormInput
                                         label="Email"
                                         value={field.value}
                                         onChange={field.onChange}
+                                        error={
+                                            Object.values(
+                                                error?.types || [],
+                                            ).flat() as string[]
+                                        }
                                     />
                                 )}
                             />
                             <Controller
                                 name="password"
                                 control={control}
-                                render={({ field }) => (
+                                render={({ field, fieldState: { error } }) => (
                                     <FormInput
                                         label="Password"
                                         type={'password'}
                                         value={field.value}
                                         onChange={field.onChange}
+                                        error={
+                                            Object.values(
+                                                error?.types || [],
+                                            ).flat() as string[]
+                                        }
                                     />
                                 )}
                             />

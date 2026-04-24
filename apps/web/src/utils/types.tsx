@@ -1,8 +1,7 @@
-export interface SignupVendorInput {
-    username: string;
-    email: string;
-    password: string;
-}
+import type z from 'zod';
+import type { signupVendorFormSchema } from './schema/signupVendorFormSchema';
+
+export type SignupVendorInput = z.infer<typeof signupVendorFormSchema>;
 
 export interface SignupInput {
     username: string;
@@ -41,6 +40,11 @@ export interface VendorData {
 export enum UserTypes {
     VENDOR = 'vendor',
     USER = 'user',
+}
+
+export enum TokenTypes {
+    VENDOR_TOKEN = 'vendor-token',
+    CUSTOMER_TOKEN = 'customer-token',
 }
 
 export interface BaseBooking {

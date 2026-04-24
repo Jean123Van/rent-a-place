@@ -1,14 +1,16 @@
 import axios from 'axios';
+import { API_URL } from '../utils/environmentVar';
+import { TokenTypes } from '../utils/types';
 
 export const api = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('vendor-token');
+    const token = localStorage.getItem(TokenTypes.VENDOR_TOKEN);
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -16,14 +18,14 @@ api.interceptors.request.use((config) => {
 });
 
 export const apiCustomer = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
 apiCustomer.interceptors.request.use((config) => {
-    const token = localStorage.getItem('customer-token');
+    const token = localStorage.getItem(TokenTypes.CUSTOMER_TOKEN);
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
