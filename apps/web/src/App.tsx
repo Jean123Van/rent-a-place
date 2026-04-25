@@ -13,59 +13,62 @@ import { CustomerProducts } from './pages/CustomerProducts';
 import { CustomerTransactions } from './pages/CustomerTransactions';
 import { CustomerProtectedGuard } from './components/guard/CustomerProtectedGuard';
 import { VendorProductList } from './pages/VendorProductList';
+import { ToastProvider } from './components/Toast/toastProvider';
 function App() {
     return (
-        <Router>
-            <Routes>
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/signin" element={<Signin />} />
+        <ToastProvider>
+            <Router>
+                <Routes>
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/signin" element={<Signin />} />
 
-                <Route
-                    element={
-                        <CustomerProtectedGuard>
-                            <UserHeader />
-                        </CustomerProtectedGuard>
-                    }
-                >
                     <Route
-                        path="/customer/vendor-list"
-                        element={<CustomerProducts />}
-                    />
-                    <Route
-                        path="customer/vendor-list/:vendorId"
-                        element={<VendorProductList />}
-                    />
-                    <Route
-                        path="/customer/transactions"
-                        element={<CustomerTransactions />}
-                    />
-                </Route>
+                        element={
+                            <CustomerProtectedGuard>
+                                <UserHeader />
+                            </CustomerProtectedGuard>
+                        }
+                    >
+                        <Route
+                            path="/customer/vendor-list"
+                            element={<CustomerProducts />}
+                        />
+                        <Route
+                            path="customer/vendor-list/:vendorId"
+                            element={<VendorProductList />}
+                        />
+                        <Route
+                            path="/customer/transactions"
+                            element={<CustomerTransactions />}
+                        />
+                    </Route>
 
-                <Route path="/signup/vendor" element={<SignupVendor />} />
-                <Route path="/signin/vendor" element={<SigninVendor />} />
+                    <Route path="/signup/vendor" element={<SignupVendor />} />
+                    <Route path="/signin/vendor" element={<SigninVendor />} />
 
-                <Route
-                    element={
-                        <VendorProtectedGuard>
-                            <VendorHeader />
-                        </VendorProtectedGuard>
-                    }
-                >
                     <Route
-                        path="/create-product"
-                        element={<CreateProduct />}
-                    ></Route>
-                    <Route
-                        path="/vendor/products"
-                        element={<VendorProducts />}
-                    ></Route>
-                    <Route
-                        path="/vendor/transactions"
-                        element={<VendorTransactions />}
-                    ></Route>
-                </Route>
-            </Routes>
-        </Router>
+                        element={
+                            <VendorProtectedGuard>
+                                <VendorHeader />
+                            </VendorProtectedGuard>
+                        }
+                    >
+                        <Route
+                            path="/create-product"
+                            element={<CreateProduct />}
+                        ></Route>
+                        <Route
+                            path="/vendor/products"
+                            element={<VendorProducts />}
+                        ></Route>
+                        <Route
+                            path="/vendor/transactions"
+                            element={<VendorTransactions />}
+                        ></Route>
+                    </Route>
+                </Routes>
+            </Router>
+        </ToastProvider>
     );
 }
 

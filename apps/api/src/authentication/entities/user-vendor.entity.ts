@@ -6,17 +6,20 @@ import {
     PrimaryGeneratedColumn,
     OneToMany,
     CreateDateColumn,
+    Unique,
 } from 'typeorm';
 
 @Entity()
+@Unique('UQ_email', ['email'])
+@Unique('UQ_username', ['username'])
 export class UserVendor {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ unique: true })
+    @Column()
     username: string;
 
-    @Column({ unique: true })
+    @Column()
     email: string;
 
     @Column()

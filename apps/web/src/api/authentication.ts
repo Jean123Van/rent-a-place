@@ -16,6 +16,8 @@ export const signupVendor = async (signupVendorInput: SignupVendorInput) => {
         } else {
             console.log(e);
         }
+
+        throw e;
     }
 };
 

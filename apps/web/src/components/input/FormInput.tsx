@@ -6,6 +6,8 @@ interface FormInputProps {
     value?: string;
     type?: React.InputHTMLAttributes<HTMLInputElement>['type'];
     error?: string[];
+    hint?: string;
+    disabled?: boolean;
     onChange?: () => void;
 }
 
@@ -15,6 +17,8 @@ export const FormInput = ({
     onChange = () => {},
     type = 'text',
     error,
+    hint,
+    disabled,
 }: FormInputProps) => {
     const isError = (error?.length || 0) >= 1;
 
@@ -33,6 +37,7 @@ export const FormInput = ({
             </label>
 
             <input
+                disabled={disabled}
                 type={type}
                 onChange={onChange}
                 placeholder={label}
@@ -48,6 +53,8 @@ export const FormInput = ({
                     outline: 'none',
                 }}
             />
+            {hint && !isError && <SmallNote>{hint}</SmallNote>}
+
             {isError &&
                 error?.map((error, i) => (
                     <SmallNote key={i} style={{ color: 'red' }}>

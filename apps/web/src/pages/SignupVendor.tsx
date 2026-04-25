@@ -9,8 +9,11 @@ import { useMutation } from '@tanstack/react-query';
 import { signupVendor } from '../api/authentication';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupVendorFormSchema } from '../utils/schema/signupVendorFormSchema';
+import { useToast } from '../components/Toast/toastHook';
 
 export const SignupVendor = () => {
+    const { addToast } = useToast();
+
     const { control, handleSubmit } = useForm<SignupVendorInput>({
         resolver: zodResolver(signupVendorFormSchema),
         criteriaMode: 'all',
@@ -23,6 +26,11 @@ export const SignupVendor = () => {
 
     const { mutate, isPending, isSuccess } = useMutation({
         mutationFn: signupVendor,
+        onError: (error: any) => {
+            if (error?.response?.data.statusCode === 409) {
+                addToast(error?.response?.data.message, 'error');
+            }
+        },
     });
 
     const handleSignupClick = (data: SignupVendorInput) => {
@@ -73,6 +81,7 @@ export const SignupVendor = () => {
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 width: '100%',
+                                marginBottom: '10px',
                             }}
                             onSubmit={(e) => {
                                 e.preventDefault();
@@ -83,6 +92,7 @@ export const SignupVendor = () => {
                                 control={control}
                                 render={({ field, fieldState: { error } }) => (
                                     <FormInput
+                                        disabled={isPending}
                                         label="Username"
                                         value={field.value}
                                         onChange={field.onChange}
@@ -91,6 +101,7 @@ export const SignupVendor = () => {
                                                 error?.types || [],
                                             ).flat() as string[]
                                         }
+                                        hint="Should be 6 to 20 characters long"
                                     />
                                 )}
                             />
@@ -99,6 +110,7 @@ export const SignupVendor = () => {
                                 control={control}
                                 render={({ field, fieldState: { error } }) => (
                                     <FormInput
+                                        disabled={isPending}
                                         label="Email"
                                         value={field.value}
                                         onChange={field.onChange}
@@ -115,6 +127,7 @@ export const SignupVendor = () => {
                                 control={control}
                                 render={({ field, fieldState: { error } }) => (
                                     <FormInput
+                                        disabled={isPending}
                                         label="Password"
                                         type={'password'}
                                         value={field.value}
@@ -124,6 +137,7 @@ export const SignupVendor = () => {
                                                 error?.types || [],
                                             ).flat() as string[]
                                         }
+                                        hint="Should be 6 to 20 characters long, contain a capital letter, number, and symbol."
                                     />
                                 )}
                             />

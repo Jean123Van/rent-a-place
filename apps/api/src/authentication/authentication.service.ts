@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    ConflictException,
+    Injectable,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { SignupVendorData } from './dto/signup-vendor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserVendor } from './entities/user-vendor.entity';
@@ -22,15 +26,44 @@ export class AuthenticationService {
     ) {}
 
     async signupVendor(signupVendorData: SignupVendorData) {
-        const { password, ...rest } = signupVendorData;
+        const { password, username, email, ...rest } = signupVendorData;
+
+        const isEmaiExists = await this.userVendorRepository.findOne({
+            where: { email },
+        });
+        const isUsernameExists = await this.userVendorRepository.findOne({
+            where: { username },
+        });
+
+        if (isEmaiExists && isUsernameExists) {
+            throw new ConflictException(
+                'Email and username already in use. Use unique ones or login instead.',
+            );
+        }
+
+        if (isUsernameExists) {
+            throw new ConflictException(
+                'Username already in use. Pick a different username.',
+            );
+        }
+
+        if (isEmaiExists) {
+            throw new ConflictException(
+                'Email already in use. Use a different email or log in instead.',
+            );
+        }
 
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        return this.userVendorRepository.save({
-            ...rest,
-            password: hashedPassword,
-        });
+        try {
+            return await this.userVendorRepository.save({
+                ...rest,
+                password: hashedPassword,
+            });
+        } catch (e) {
+            throw e;
+        }
     }
 
     async signinVendor(signinVendorData: SigninVendorData) {
