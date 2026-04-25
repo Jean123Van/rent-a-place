@@ -29,7 +29,13 @@ export const SignupVendor = () => {
         onError: (error: any) => {
             if (error?.response?.data.statusCode === 409) {
                 addToast(error?.response?.data.message, 'error');
+                return;
             }
+
+            addToast(
+                'Something went wrong. Please try again later or contact customer support.',
+                'error',
+            );
         },
     });
 
