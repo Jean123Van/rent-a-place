@@ -33,7 +33,12 @@ export class ProductsService {
     }
 
     getAllVendors() {
-        return this.userVendorRepository.find({ order: { createdAt: 'DESC' } });
+        return this.userVendorRepository
+            .createQueryBuilder('vendor')
+            .innerJoin('vendor.products', 'product')
+            .distinct(true)
+            .orderBy('vendor.createdAt', 'DESC')
+            .getMany();
     }
 
     bookProduct(userId: string, bookProductInput: BookProductData) {

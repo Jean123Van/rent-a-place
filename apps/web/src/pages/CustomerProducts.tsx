@@ -6,14 +6,31 @@ import type { VendorData } from '../utils/types';
 import { COLORS } from '../styles/colors';
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { useNavigate } from 'react-router-dom';
+import { SomethingWentWrong } from '../components/Modal/SomethingWentWrong';
+import { NoResults } from '../components/Modal/NoResults';
 
 export const CustomerProducts = () => {
     const navigate = useNavigate();
 
-    const { isLoading, data } = useQuery({
+    const { isLoading, data, isError } = useQuery({
         queryKey: ['get-all', 'vendors'],
         queryFn: getAllVendors,
     });
+
+    if (isError) {
+        return (
+            <div
+                style={{
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    paddingTop: '40px',
+                }}
+            >
+                <SomethingWentWrong />
+            </div>
+        );
+    }
 
     if (isLoading) {
         return (
@@ -26,6 +43,21 @@ export const CustomerProducts = () => {
                 }}
             >
                 <LoadingSpinner />
+            </div>
+        );
+    }
+
+    if (data?.data.length === 0) {
+        return (
+            <div
+                style={{
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    paddingTop: '40px',
+                }}
+            >
+                <NoResults />
             </div>
         );
     }

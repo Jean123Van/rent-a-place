@@ -62,6 +62,7 @@ export const SigninVendor = () => {
                         flexDirection: 'column',
                         alignItems: 'center',
                         width: '100%',
+                        marginBottom: '10px',
                     }}
                 >
                     <Controller

@@ -58,6 +58,8 @@ export class AuthenticationService {
 
         try {
             return await this.userVendorRepository.save({
+                username,
+                email,
                 ...rest,
                 password: hashedPassword,
             });
