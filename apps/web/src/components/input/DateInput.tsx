@@ -1,31 +1,88 @@
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { COLORS } from '../../styles/colors';
+import { forwardRef } from 'react';
 
 interface DateInputProps {
-    onChangeStartDate?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onChangeEndDate?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChangeStartDate?: (date: Date) => void;
+    startDate?: Date;
+    onChangeEndDate?: (date: Date) => void;
+    endDate?: Date;
 }
+
+enum DateType {
+    START,
+    END,
+}
+
+interface CustomInputProps {
+    value?: string;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    type: DateType;
+}
+
+const DatePickerButton = forwardRef<HTMLButtonElement, CustomInputProps>(
+    ({ value, onClick, type }, ref) => (
+        <button
+            ref={ref}
+            onClick={onClick}
+            style={{
+                fontSize: '15px',
+                padding: '5px 10px',
+                borderRadius: '7px',
+                backgroundColor: 'transparent',
+                border: `1px solid ${COLORS.skintone}`,
+            }}
+        >
+            {value || (type === DateType.START ? 'Start date' : 'End date')}
+        </button>
+    ),
+);
 
 export const DateInput = ({
     onChangeStartDate,
+    startDate,
     onChangeEndDate,
+    endDate,
 }: DateInputProps) => {
     return (
         <div
             style={{
                 display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                flexDirection: 'column',
                 borderBottom: `2px solid ${COLORS.skintone}`,
                 paddingBottom: '10px',
+                gap: '5px',
+                width: '100%',
             }}
         >
-            <div>
-                <span>Start Date: </span>
-                <input type="date" onChange={onChangeStartDate} />
-            </div>
-            <div>
-                <span>End Date: </span>
-                <input type="date" onChange={onChangeEndDate} />
+            <span>Select dates:</span>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    gap: '4px',
+                }}
+            >
+                <DatePicker
+                    selected={startDate}
+                    onChange={(date: Date | null) => {
+                        if (date) {
+                            onChangeStartDate?.(date);
+                        }
+                    }}
+                    customInput={<DatePickerButton type={DateType.START} />}
+                />
+                <DatePicker
+                    selected={endDate}
+                    onChange={(date: Date | null) => {
+                        if (date) {
+                            onChangeEndDate?.(date);
+                        }
+                    }}
+                    customInput={<DatePickerButton type={DateType.END} />}
+                />
             </div>
         </div>
     );

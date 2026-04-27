@@ -29,9 +29,14 @@ export const VendorProductList = () => {
 
     const [productId, setProductId] = useState<string | undefined>(undefined);
 
-    const { handleSubmit, control, setValue } = useForm<BookProductForm>({
-        resolver: zodResolver(bookProductFormSchema),
-    });
+    const { handleSubmit, control, setValue, watch } = useForm<BookProductForm>(
+        {
+            resolver: zodResolver(bookProductFormSchema),
+        },
+    );
+
+    const startDate = watch('startDate');
+    const endDate = watch('endDate');
 
     const { isPending, mutate, isSuccess } = useMutation({
         mutationFn: bookProduct,
@@ -98,11 +103,13 @@ export const VendorProductList = () => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <DateInput
-                            onChangeStartDate={(e) => {
-                                setValue('startDate', e.target.value);
+                            startDate={startDate}
+                            onChangeStartDate={(date) => {
+                                setValue('startDate', date);
                             }}
-                            onChangeEndDate={(e) => {
-                                setValue('endDate', e.target.value);
+                            endDate={endDate}
+                            onChangeEndDate={(date) => {
+                                setValue('endDate', date);
                             }}
                         />
                         <Controller
