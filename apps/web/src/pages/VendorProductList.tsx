@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { bookProduct, getProductsByVendor } from '../api/products';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
-import { type BookProductInput, type ProductData } from '../utils/types';
+import { type BookProductForm, type ProductData } from '../utils/types';
 import { COLORS } from '../styles/colors';
 import placeholder from '../assets/product-placeholder.png';
 import { PrimaryButton } from '../components/button/PrimaryButton';
@@ -11,6 +11,8 @@ import { DateInput } from '../components/input/DateInput';
 import { FormInput } from '../components/input/FormInput';
 import { Controller, useForm } from 'react-hook-form';
 import { SuccessModal } from '../components/Modal/SuccessModal';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { bookProductFormSchema } from '../utils/schema/bookProductFormSchema';
 
 const Title = ({ value }: { value: string }) => {
     return (
@@ -27,8 +29,8 @@ export const VendorProductList = () => {
 
     const [productId, setProductId] = useState<string | undefined>(undefined);
 
-    const { handleSubmit, control, setValue } = useForm<BookProductInput>({
-        defaultValues: { vendorId },
+    const { handleSubmit, control, setValue } = useForm<BookProductForm>({
+        resolver: zodResolver(bookProductFormSchema),
     });
 
     const { isPending, mutate, isSuccess } = useMutation({
@@ -40,8 +42,12 @@ export const VendorProductList = () => {
         queryFn: () => getProductsByVendor(vendorId!),
     });
 
-    const handleBookBtn = (bookProductInput: BookProductInput) => {
-        mutate({ ...bookProductInput, productId: productId! });
+    const handleBookBtn = (bookProductInput: BookProductForm) => {
+        mutate({
+            ...bookProductInput,
+            productId: productId!,
+            vendorId: vendorId!,
+        });
     };
 
     if (isLoading) {

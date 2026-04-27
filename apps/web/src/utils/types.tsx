@@ -1,7 +1,9 @@
 import type z from 'zod';
 import type { signupVendorFormSchema } from './schema/signupVendorFormSchema';
+import type { bookProductFormSchema } from './schema/bookProductFormSchema';
 
 export type SignupVendorInput = z.infer<typeof signupVendorFormSchema>;
+export type BookProductForm = z.infer<typeof bookProductFormSchema>;
 
 export interface SignupInput {
     username: string;
@@ -47,18 +49,12 @@ export enum TokenTypes {
     CUSTOMER_TOKEN = 'customer-token',
 }
 
-export interface BaseBooking {
-    additionalNote: string;
-    startDate: string;
-    endDate: string;
-}
-
-export interface BookProductInput extends BaseBooking {
+export interface BookProductInput extends BookProductForm {
     productId: string;
     vendorId: string;
 }
 
-export interface UserBooking extends BaseBooking {
+export interface UserBooking extends BookProductForm {
     id: string;
     createdAt: string;
     vendor: VendorData;
@@ -71,7 +67,7 @@ export interface Customer {
     email: string;
 }
 
-export interface VendorBooking extends BaseBooking {
+export interface VendorBooking extends BookProductForm {
     id: string;
     createdAt: string;
     product: ProductData;
