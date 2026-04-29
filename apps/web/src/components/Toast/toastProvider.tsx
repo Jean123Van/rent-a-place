@@ -76,6 +76,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
                             fontSize: '15px',
                             color: toast.type === 'error' ? 'red' : 'green',
                             textAlign: 'center',
+                            backgroundColor: 'white',
 
                             opacity: showToast ? 1 : 0,
                             transform: showToast

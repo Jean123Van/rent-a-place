@@ -10,9 +10,9 @@ import { useState } from 'react';
 import { DateInput } from '../components/input/DateInput';
 import { FormInput } from '../components/input/FormInput';
 import { Controller, useForm } from 'react-hook-form';
-import { SuccessModal } from '../components/Modal/SuccessModal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { bookProductFormSchema } from '../utils/schema/bookProductFormSchema';
+import { useToast } from '../components/Toast/toastHook';
 
 const Title = ({ value }: { value: string }) => {
     return (
@@ -25,6 +25,8 @@ const Description = ({ value }: { value: string }) => {
 };
 
 export const VendorProductList = () => {
+    const { addToast } = useToast();
+
     const { vendorId } = useParams();
 
     const [productId, setProductId] = useState<string | undefined>(undefined);
@@ -34,6 +36,7 @@ export const VendorProductList = () => {
         control,
         setValue,
         watch,
+        reset,
         formState: { errors },
     } = useForm<BookProductForm>({
         resolver: zodResolver(bookProductFormSchema),
@@ -43,8 +46,21 @@ export const VendorProductList = () => {
     const startDate = watch('startDate');
     const endDate = watch('endDate');
 
-    const { isPending, mutate, isSuccess } = useMutation({
+    const { isPending, mutate } = useMutation({
         mutationFn: bookProduct,
+        onError: () => {
+            addToast(
+                'Something went wrong. Please try again later or contact costumer support',
+                'error',
+            );
+        },
+        onSuccess: () => {
+            reset();
+            addToast(
+                'Successfully created product! Add another product or view created product in Products tab',
+                'success',
+            );
+        },
     });
 
     const { isLoading, data } = useQuery({
@@ -53,6 +69,11 @@ export const VendorProductList = () => {
     });
 
     const handleBookBtn = (bookProductInput: BookProductForm) => {
+        console.log({
+            ...bookProductInput,
+            productId: productId!,
+            vendorId: vendorId!,
+        });
         mutate({
             ...bookProductInput,
             productId: productId!,
@@ -89,6 +110,7 @@ export const VendorProductList = () => {
                         alignItems: 'center',
                     }}
                     onClick={() => {
+                        reset();
                         setProductId(undefined);
                     }}
                 >
@@ -149,7 +171,6 @@ export const VendorProductList = () => {
                         >
                             Book
                         </PrimaryButton>
-                        <SuccessModal isSuccess={isSuccess} />
                     </div>
                 </div>
             )}

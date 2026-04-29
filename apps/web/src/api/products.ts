@@ -42,6 +42,8 @@ export const bookProduct = async (bookProductInput: BookProductInput) => {
         } else {
             console.log(e);
         }
+
+        throw e;
     }
 };
 

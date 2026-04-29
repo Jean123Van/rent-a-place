@@ -4,6 +4,7 @@ import { COLORS } from '../../styles/colors';
 import { forwardRef } from 'react';
 import { addDate } from '../../utils/helper/addDate';
 import { SmallNote } from '../Text/SmallNote';
+import './dateInput.css';
 
 enum DateType {
     START,
@@ -22,6 +23,7 @@ const DatePickerButton = forwardRef<HTMLButtonElement, CustomInputProps>(
         <button
             ref={ref}
             onClick={onClick}
+            className="date-btn"
             style={{
                 fontSize: '15px',
                 padding: '5px 10px',
@@ -31,6 +33,7 @@ const DatePickerButton = forwardRef<HTMLButtonElement, CustomInputProps>(
                     ? '1px solid red'
                     : `1px solid ${COLORS.skintone}`,
                 color: isError ? 'red' : 'black',
+                transition: 'all 0.2s',
             }}
         >
             {value || (type === DateType.START ? 'Start date' : 'End date')}
@@ -56,6 +59,7 @@ export const DateInput = ({
     disabled,
 }: DateInputProps) => {
     const isError = (error?.length || 0) >= 1;
+    const today = new Date();
 
     return (
         <fieldset
@@ -94,6 +98,7 @@ export const DateInput = ({
                 >
                     <DatePicker
                         maxDate={endDate ? addDate(endDate, -1) : undefined}
+                        minDate={today}
                         selected={startDate}
                         onChange={(date: Date | null) => {
                             if (date) {
@@ -108,7 +113,11 @@ export const DateInput = ({
                         }
                     />
                     <DatePicker
-                        minDate={startDate ? addDate(startDate, 1) : undefined}
+                        minDate={
+                            startDate
+                                ? addDate(startDate, 1)
+                                : addDate(today, 1)
+                        }
                         selected={endDate}
                         onChange={(date: Date | null) => {
                             if (date) {
