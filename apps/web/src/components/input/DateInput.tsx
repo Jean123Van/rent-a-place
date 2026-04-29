@@ -2,6 +2,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { COLORS } from '../../styles/colors';
 import { forwardRef } from 'react';
+import { addDate } from '../../utils/helper/addDate';
 
 interface DateInputProps {
     onChangeStartDate?: (date: Date) => void;
@@ -66,6 +67,7 @@ export const DateInput = ({
                 }}
             >
                 <DatePicker
+                    maxDate={endDate ? addDate(endDate, -1) : undefined}
                     selected={startDate}
                     onChange={(date: Date | null) => {
                         if (date) {
@@ -75,6 +77,7 @@ export const DateInput = ({
                     customInput={<DatePickerButton type={DateType.START} />}
                 />
                 <DatePicker
+                    minDate={startDate ? addDate(startDate, 1) : undefined}
                     selected={endDate}
                     onChange={(date: Date | null) => {
                         if (date) {
