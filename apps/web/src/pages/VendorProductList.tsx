@@ -29,11 +29,16 @@ export const VendorProductList = () => {
 
     const [productId, setProductId] = useState<string | undefined>(undefined);
 
-    const { handleSubmit, control, setValue, watch } = useForm<BookProductForm>(
-        {
-            resolver: zodResolver(bookProductFormSchema),
-        },
-    );
+    const {
+        handleSubmit,
+        control,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm<BookProductForm>({
+        resolver: zodResolver(bookProductFormSchema),
+        criteriaMode: 'all',
+    });
 
     const startDate = watch('startDate');
     const endDate = watch('endDate');
@@ -103,20 +108,34 @@ export const VendorProductList = () => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <DateInput
+                            disabled={isPending}
                             startDate={startDate}
                             onChangeStartDate={(date) => {
-                                setValue('startDate', date);
+                                setValue('startDate', date, {
+                                    shouldValidate: true,
+                                });
                             }}
                             endDate={endDate}
                             onChangeEndDate={(date) => {
-                                setValue('endDate', date);
+                                setValue('endDate', date, {
+                                    shouldValidate: true,
+                                });
                             }}
+                            error={
+                                [
+                                    Object.values(
+                                        errors.startDate?.types || [],
+                                    ),
+                                    Object.values(errors.endDate?.types || []),
+                                ].flat() as string[]
+                            }
                         />
                         <Controller
                             control={control}
                             name="additionalNote"
                             render={({ field }) => (
                                 <FormInput
+                                    disabled={isPending}
                                     label="Additional note"
                                     value={field.value}
                                     onChange={field.onChange}

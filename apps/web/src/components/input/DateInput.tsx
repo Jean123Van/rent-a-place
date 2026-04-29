@@ -44,6 +44,7 @@ interface DateInputProps {
     onChangeEndDate?: (date: Date) => void;
     endDate?: Date;
     error?: string[];
+    disabled?: boolean;
 }
 
 export const DateInput = ({
@@ -52,16 +53,20 @@ export const DateInput = ({
     onChangeEndDate,
     endDate,
     error,
+    disabled,
 }: DateInputProps) => {
     const isError = (error?.length || 0) >= 1;
 
     return (
-        <div
+        <fieldset
+            disabled={disabled}
             style={{
                 display: 'flex',
                 flexDirection: 'column',
                 width: '100%',
                 gap: '4px',
+                border: 'none',
+                padding: '0',
             }}
         >
             <div
@@ -125,6 +130,6 @@ export const DateInput = ({
                         * {error}
                     </SmallNote>
                 ))}
-        </div>
+        </fieldset>
     );
 };
