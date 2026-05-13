@@ -1,9 +1,11 @@
 import type z from 'zod';
 import type { signupVendorFormSchema } from './schema/signupVendorFormSchema';
 import type { bookProductFormSchema } from './schema/bookProductFormSchema';
+import type { createProductFormSchema } from './schema/createProductFormSchema';
 
 export type SignupVendorInput = z.infer<typeof signupVendorFormSchema>;
 export type BookProductForm = z.infer<typeof bookProductFormSchema>;
+export type CreateProductInput = z.infer<typeof createProductFormSchema>;
 
 export interface SignupInput {
     username: string;
@@ -19,13 +21,6 @@ export interface SigninVendorInput {
 export interface SigninInput {
     email: string;
     password: string;
-}
-
-export interface CreateProductInput {
-    title: string;
-    rate: string;
-    description: string;
-    units: string;
 }
 
 export interface ProductData extends CreateProductInput {
