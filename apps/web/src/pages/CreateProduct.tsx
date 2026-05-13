@@ -50,18 +50,39 @@ export const CreateProduct = () => {
                     )}
                 />
 
-                <Controller
-                    name="rate"
-                    control={control}
-                    render={({ field }) => (
-                        <FormInput
-                            label="Rate (php)"
-                            value={field.value}
-                            type={'number'}
-                            onChange={field.onChange}
-                        />
-                    )}
-                />
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '5px',
+                    }}
+                >
+                    <Controller
+                        name="rate"
+                        control={control}
+                        render={({ field }) => (
+                            <FormInput
+                                label="Rate (php)"
+                                value={field.value}
+                                type={'number'}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        name={'units'}
+                        control={control}
+                        render={({ field }) => (
+                            <FormInput
+                                label="Number of units"
+                                type={'number'}
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+                </div>
 
                 <Controller
                     name="description"

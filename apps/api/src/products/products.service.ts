@@ -19,8 +19,12 @@ export class ProductsService {
     ) {}
 
     createProduct(createProductData: CreateProductData, userId: string) {
+        const { rate, units, ...rest } = createProductData;
+
         return this.productRepository.save({
-            ...createProductData,
+            ...rest,
+            rate: Number(rate),
+            units: Number(units),
             vendor: { id: userId },
         });
     }

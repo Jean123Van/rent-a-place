@@ -25,6 +25,7 @@ export interface CreateProductInput {
     title: string;
     rate: string;
     description: string;
+    units: string;
 }
 
 export interface ProductData extends CreateProductInput {

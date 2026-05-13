@@ -4,9 +4,12 @@ export class CreateProductData {
     @IsNotEmpty()
     title: string;
 
-    @IsNumber()
-    rate: number;
+    @IsNotEmpty()
+    rate: string;
 
     @IsNotEmpty()
     description: string;
+
+    @IsNotEmpty()
+    units: string;
 }

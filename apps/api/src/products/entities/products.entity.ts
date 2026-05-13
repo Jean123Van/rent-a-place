@@ -21,6 +21,9 @@ export class Product {
     rate: number;
 
     @Column()
+    units: number;
+
+    @Column()
     description: string;
 
     @CreateDateColumn()
