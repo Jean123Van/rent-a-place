@@ -29,11 +29,15 @@ export const BaseHeader = ({ routes, type }: BaseHeaderProps) => {
         >
             <header
                 style={{
-                    borderBottom: `3px solid ${COLORS.skintone}`,
+                    border: '2px solid white',
                     padding: '10px',
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    gap: '40px',
+                    borderRadius: '10px',
+                    width: 'fit-content',
+                    margin: 'auto',
+                    marginTop: '10px',
                 }}
             >
                 <div

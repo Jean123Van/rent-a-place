@@ -2,21 +2,22 @@
     border-radius: 3px;
     padding: 5px;
     font-size: 15px;
-    border: 2px solid var(--skintone);
-    transition: 0.1s ease;
+    transition: 0.2s ease;
 }
 
 .navbar-btn-inactive {
     background-color: white;
+    border: 2px solid white;
 }
 
 .navbar-btn-active {
-    background-color: var(--skintone);
+    background-color: black;
     color: white;
+    border: 2px solid green;
 }
 
 .navbar-btn:hover {
     cursor: pointer;
-    background-color: var(--skintone);
+    background-color: black;
     color: white;
 }

@@ -59,7 +59,6 @@ export const VendorProducts = () => {
                 padding: '50px',
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'black',
             }}
         >
             <div
