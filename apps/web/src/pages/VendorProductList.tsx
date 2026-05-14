@@ -48,10 +48,8 @@ export const VendorProductList = () => {
         },
         onSuccess: () => {
             reset();
-            addToast(
-                'Successfully created product! Add another product or view created product in Products tab',
-                'success',
-            );
+            setProductId(undefined);
+            addToast('Successfully booked!', 'success');
         },
     });
 
@@ -61,11 +59,6 @@ export const VendorProductList = () => {
     });
 
     const handleBookBtn = (bookProductInput: BookProductForm) => {
-        console.log({
-            ...bookProductInput,
-            productId: productId!,
-            vendorId: vendorId!,
-        });
         mutate({
             ...bookProductInput,
             productId: productId!,

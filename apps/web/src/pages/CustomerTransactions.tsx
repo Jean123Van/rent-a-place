@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { getUserBookings } from '../api/products';
-import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import placeholder from '../assets/product-placeholder.jpg';
 import type { UserBooking } from '../utils/types';
 import { COLORS } from '../styles/colors';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
+import { NoResults } from '../components/Modal/NoResults';
+import { BaseContainer } from '../components/container/BaseContainer';
 
 export const CustomerTransactions = () => {
     const { data, isLoading } = useQuery({
@@ -27,6 +28,10 @@ export const CustomerTransactions = () => {
         );
     }
 
+    if (data?.data.length === 0) {
+        return <NoResults />;
+    }
+
     return (
         <div
             style={{
@@ -46,7 +51,7 @@ export const CustomerTransactions = () => {
                 }}
             >
                 {data?.data.map((booking: UserBooking) => (
-                    <ShadowedContainer
+                    <BaseContainer
                         key={booking.id}
                         style={{
                             padding: '20px',
@@ -129,7 +134,7 @@ export const CustomerTransactions = () => {
                                 </span>
                             </div>
                         </div>
-                    </ShadowedContainer>
+                    </BaseContainer>
                 ))}
             </div>
         </div>

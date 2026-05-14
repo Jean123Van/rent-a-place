@@ -2,9 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { getVendorBookings } from '../api/products';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 import type { VendorBooking } from '../utils/types';
-import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import placeholder from '../assets/product-placeholder.jpg';
 import { COLORS } from '../styles/colors';
+import { NoResults } from '../components/Modal/NoResults';
+import { BaseContainer } from '../components/container/BaseContainer';
 
 export const VendorTransactions = () => {
     const { data, isLoading } = useQuery({
@@ -27,6 +28,10 @@ export const VendorTransactions = () => {
         );
     }
 
+    if (data?.data.length === 0) {
+        return <NoResults />;
+    }
+
     return (
         <div
             style={{
@@ -46,7 +51,7 @@ export const VendorTransactions = () => {
                 }}
             >
                 {data?.data.map((booking: VendorBooking) => (
-                    <ShadowedContainer
+                    <BaseContainer
                         key={booking.id}
                         style={{
                             padding: '20px',
@@ -140,7 +145,7 @@ export const VendorTransactions = () => {
                                 </span>
                             </div>
                         </div>
-                    </ShadowedContainer>
+                    </BaseContainer>
                 ))}
             </div>
         </div>
