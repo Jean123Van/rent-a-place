@@ -21,9 +21,7 @@ export const PrimaryButton = ({
         <button
             className="main-button"
             style={{
-                border: isDisabled
-                    ? '1px solid gray'
-                    : `1px solid ${COLORS.skintone}`,
+                border: isDisabled ? '1px solid gray' : `1px solid white`,
             }}
             onClick={onClick}
             disabled={isDisabled}

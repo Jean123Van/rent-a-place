@@ -13,16 +13,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { bookProductFormSchema } from '../utils/schema/bookProductFormSchema';
 import { useToast } from '../components/Toast/toastHook';
-
-const Title = ({ value }: { value: string }) => {
-    return (
-        <span style={{ fontSize: '14px', fontWeight: 'bolder' }}>{value}</span>
-    );
-};
-
-const Description = ({ value }: { value: string }) => {
-    return <span style={{ fontSize: '14px' }}>{value}</span>;
-};
+import { ListContainer } from '../components/container/ListContainer';
+import { RowDetails } from '../components/Text/RowDetails';
 
 export const VendorProductList = () => {
     const { addToast } = useToast();
@@ -175,25 +167,16 @@ export const VendorProductList = () => {
                 </div>
             )}
 
-            <div
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(2, 1fr)',
-                    padding: '10px',
-                    gap: '10px',
-                }}
-            >
+            <ListContainer>
                 {data?.data.map((product: ProductData) => (
                     <div
                         style={{
-                            border: `1px solid ${COLORS.skintone}`,
+                            border: `1px solid white`,
                             borderRadius: '10px',
-                            maxWidth: '400px',
-
                             padding: '10px',
                             display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+
                             gap: '10px',
                         }}
                         key={product.id}
@@ -201,31 +184,42 @@ export const VendorProductList = () => {
                         <img
                             src={placeholder}
                             style={{
-                                width: '100%',
-                                height: '300px',
+                                width: '40%',
                             }}
                         />
-                        <div
-                            style={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(2, 1fr)',
-                            }}
-                        >
-                            <Title value="Product name" />
-                            <Description value={product.title} />
+                        <div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    flex: '1',
+                                    gap: '5px',
+                                }}
+                            >
+                                <RowDetails
+                                    title="Product name"
+                                    value={product.title}
+                                />
 
-                            <Title value="Description" />
-                            <Description value={product.description} />
+                                <RowDetails
+                                    title="Description"
+                                    value={product.description}
+                                />
 
-                            <Title value="Rate" />
-                            <Description value={`₱ ${product.rate} / night`} />
+                                <RowDetails
+                                    title="Rate"
+                                    value={`₱ ${product.rate} / night`}
+                                />
+                            </div>
+                            <PrimaryButton
+                                onClick={() => setProductId(product.id)}
+                            >
+                                Book now
+                            </PrimaryButton>
                         </div>
-                        <PrimaryButton onClick={() => setProductId(product.id)}>
-                            Book now
-                        </PrimaryButton>
                     </div>
                 ))}
-            </div>
+            </ListContainer>
         </>
     );
 };
