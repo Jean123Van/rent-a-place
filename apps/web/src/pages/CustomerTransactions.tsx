@@ -61,10 +61,7 @@ export const CustomerTransactions = () => {
                             alignItems: 'center',
                         }}
                     >
-                        <img
-                            src={placeholder}
-                            style={{ height: '70px', width: '70px' }}
-                        />
+                        <img src={placeholder} style={{ width: '40%' }} />
                         <div
                             style={{
                                 display: 'flex',
@@ -75,28 +72,50 @@ export const CustomerTransactions = () => {
                             <span
                                 style={{
                                     fontWeight: 'bolder',
-                                    fontSize: '18px',
+                                    fontSize: '16px',
                                     marginBottom: '4px',
                                 }}
                             >
                                 {booking.vendor.username}{' '}
-                                {`(${booking.product.title})`}
+                                <span
+                                    style={{ color: 'gray' }}
+                                >{`(${booking.product.title})`}</span>
                             </span>
                             <div>
-                                <span style={{ fontWeight: 'bolder' }}>
+                                <span
+                                    style={{
+                                        fontWeight: 'bolder',
+                                        fontSize: '16px',
+                                    }}
+                                >
                                     Start date:{' '}
                                 </span>
-                                <span>
+                                <span
+                                    style={{
+                                        fontSize: '15px',
+                                        color: 'grey',
+                                    }}
+                                >
                                     {new Date(
                                         booking.startDate,
                                     ).toLocaleDateString()}
                                 </span>
                             </div>
                             <div style={{ marginBottom: '5px' }}>
-                                <span style={{ fontWeight: 'bolder' }}>
+                                <span
+                                    style={{
+                                        fontWeight: 'bolder',
+                                        fontSize: '16px',
+                                    }}
+                                >
                                     End date:{' '}
                                 </span>
-                                <span>
+                                <span
+                                    style={{
+                                        fontSize: '15px',
+                                        color: 'grey',
+                                    }}
+                                >
                                     {new Date(
                                         booking.endDate,
                                     ).toLocaleDateString()}
@@ -104,10 +123,17 @@ export const CustomerTransactions = () => {
                             </div>
 
                             <div style={{ marginBottom: '5px' }}>
-                                <span style={{ fontWeight: 'bolder' }}>
+                                <span
+                                    style={{
+                                        fontWeight: 'bolder',
+                                        fontSize: '16px',
+                                    }}
+                                >
                                     Booked on:{' '}
                                 </span>
-                                <span>
+                                <span
+                                    style={{ fontSize: '15px', color: 'grey' }}
+                                >
                                     {new Date(
                                         booking.createdAt,
                                     ).toLocaleDateString()}
@@ -120,14 +146,21 @@ export const CustomerTransactions = () => {
                                     gap: '3px',
                                 }}
                             >
-                                <span style={{ fontWeight: 'bolder' }}>
+                                <span
+                                    style={{
+                                        fontWeight: 'bolder',
+                                        fontSize: '16px',
+                                    }}
+                                >
                                     Notes to the vendor:
                                 </span>
                                 <span
                                     style={{
-                                        border: `2px solid ${COLORS.skintone}`,
+                                        border: `2px solid white`,
                                         padding: '5px',
                                         borderRadius: '10px',
+                                        color: 'grey',
+                                        fontSize: '15px',
                                     }}
                                 >
                                     {booking.additionalNote}
