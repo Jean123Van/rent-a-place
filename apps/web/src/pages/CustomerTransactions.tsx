@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getUserBookings } from '../api/products';
 import { ShadowedContainer } from '../components/container/ShadowedContainer';
-import placeholder from '../assets/product-placeholder.png';
+import placeholder from '../assets/product-placeholder.jpg';
 import type { UserBooking } from '../utils/types';
 import { COLORS } from '../styles/colors';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';

@@ -4,7 +4,7 @@ import { bookProduct, getProductsByVendor } from '../api/products';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 import { type BookProductForm, type ProductData } from '../utils/types';
 import { COLORS } from '../styles/colors';
-import placeholder from '../assets/product-placeholder.png';
+import placeholder from '../assets/product-placeholder.jpg';
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { useState } from 'react';
 import { DateInput } from '../components/input/DateInput';

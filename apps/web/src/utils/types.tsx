@@ -23,9 +23,13 @@ export interface SigninInput {
     password: string;
 }
 
-export interface ProductData extends CreateProductInput {
+export interface ProductData {
     id: string;
-    createdAt: Date;
+    createdAt: string;
+    title: string;
+    rate: number;
+    units: number;
+    description: string;
 }
 
 export interface VendorData {

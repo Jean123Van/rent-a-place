@@ -14,6 +14,8 @@ export const createProduct = async (createProductInput: CreateProductInput) => {
         } else {
             console.log(e);
         }
+
+        throw e;
     }
 };
 

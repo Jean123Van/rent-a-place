@@ -5,11 +5,13 @@ import { FormInput } from '../components/input/FormInput';
 import type { CreateProductInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { createProduct } from '../api/products';
-import { SuccessModal } from '../components/Modal/SuccessModal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createProductFormSchema } from '../utils/schema/createProductFormSchema';
+import { useToast } from '../components/Toast/toastHook';
 
 export const CreateProduct = () => {
+    const { addToast } = useToast();
+
     const { control, handleSubmit, reset } = useForm<CreateProductInput>({
         resolver: zodResolver(createProductFormSchema),
         criteriaMode: 'all',
@@ -21,9 +23,19 @@ export const CreateProduct = () => {
         },
     });
 
-    const { mutate, isPending, isSuccess } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: createProduct,
+        onError: () => {
+            addToast(
+                'Something went wrong. Please try again later or contact customer support.',
+                'error',
+            );
+        },
         onSuccess: () => {
+            addToast(
+                'Successfully created product! Add another product or view created product in Products tab.',
+                'success',
+            );
             reset();
         },
     });
@@ -143,7 +155,6 @@ export const CreateProduct = () => {
                     >
                         Create
                     </PrimaryButton>
-                    <SuccessModal isSuccess={isSuccess} />
                 </div>
             </ShadowedContainer>
         </div>

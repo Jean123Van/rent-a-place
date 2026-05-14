@@ -3,7 +3,7 @@ import { getVendorBookings } from '../api/products';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 import type { VendorBooking } from '../utils/types';
 import { ShadowedContainer } from '../components/container/ShadowedContainer';
-import placeholder from '../assets/product-placeholder.png';
+import placeholder from '../assets/product-placeholder.jpg';
 import { COLORS } from '../styles/colors';
 
 export const VendorTransactions = () => {

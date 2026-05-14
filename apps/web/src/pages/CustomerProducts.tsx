@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAllVendors } from '../api/vendors';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
-import placeholder from '../assets/product-placeholder.png';
+import placeholder from '../assets/product-placeholder.jpg';
 import type { VendorData } from '../utils/types';
 import { COLORS } from '../styles/colors';
 import { PrimaryButton } from '../components/button/PrimaryButton';
