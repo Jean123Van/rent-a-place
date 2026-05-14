@@ -32,7 +32,7 @@ export const FormInput = ({
                 marginBottom: '10px',
             }}
         >
-            <label htmlFor={label} style={{ color: isError ? 'red' : 'black' }}>
+            <label htmlFor={label} style={{ color: isError ? 'red' : 'white' }}>
                 {label}
             </label>
 
@@ -45,9 +45,7 @@ export const FormInput = ({
                 value={value}
                 style={{
                     border: 'none',
-                    borderBottom: isError
-                        ? `2px solid red`
-                        : `2px solid ${COLORS.skintone}`,
+                    borderBottom: isError ? `2px solid red` : `2px solid grey`,
                     width: '100%',
                     padding: '6px',
                     outline: 'none',

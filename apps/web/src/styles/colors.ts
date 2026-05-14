@@ -1,5 +1,6 @@
 export const COLORS = {
     skintone: '#E0AC69',
-    skintoneOverlay: '#e0ac696e',
+    skintoneOverlay: '#1e1d1bce',
     white: '#FFFFFF',
+    greyOverlay: '#1e1d1bce',
 };

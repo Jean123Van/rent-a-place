@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateProductData } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
@@ -18,8 +18,18 @@ export class ProductsService {
         private bookingRepository: Repository<Booking>,
     ) {}
 
-    createProduct(createProductData: CreateProductData, userId: string) {
+    async createProduct(createProductData: CreateProductData, userId: string) {
         const { rate, units, ...rest } = createProductData;
+
+        const isTitleExists = await this.productRepository.findOne({
+            where: { title: createProductData.title },
+        });
+
+        if (isTitleExists) {
+            throw new ConflictException(
+                'Title already in use. Please choose a different one',
+            );
+        }
 
         return this.productRepository.save({
             ...rest,

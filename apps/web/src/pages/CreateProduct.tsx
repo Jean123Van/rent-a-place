@@ -1,6 +1,5 @@
 import { useForm, Controller } from 'react-hook-form';
 import { PrimaryButton } from '../components/button/PrimaryButton';
-import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import { FormInput } from '../components/input/FormInput';
 import type { CreateProductInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
@@ -8,6 +7,7 @@ import { createProduct } from '../api/products';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createProductFormSchema } from '../utils/schema/createProductFormSchema';
 import { useToast } from '../components/Toast/toastHook';
+import { BaseContainer } from '../components/container/BaseContainer';
 
 export const CreateProduct = () => {
     const { addToast } = useToast();
@@ -25,7 +25,12 @@ export const CreateProduct = () => {
 
     const { mutate, isPending } = useMutation({
         mutationFn: createProduct,
-        onError: () => {
+        onError: (error: any) => {
+            if (error?.response?.data.statusCode === 409) {
+                addToast(error?.response?.data.message, 'error');
+                return;
+            }
+
             addToast(
                 'Something went wrong. Please try again later or contact customer support.',
                 'error',
@@ -54,7 +59,7 @@ export const CreateProduct = () => {
                 alignItems: 'center',
             }}
         >
-            <ShadowedContainer
+            <BaseContainer
                 style={{
                     maxWidth: '500px',
                     width: '100%',
@@ -156,7 +161,7 @@ export const CreateProduct = () => {
                         Create
                     </PrimaryButton>
                 </div>
-            </ShadowedContainer>
+            </BaseContainer>
         </div>
     );
 };

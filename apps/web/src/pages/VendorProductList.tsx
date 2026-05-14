@@ -93,13 +93,12 @@ export const VendorProductList = () => {
             {productId && (
                 <div
                     style={{
-                        backgroundColor: COLORS.skintoneOverlay,
-                        position: 'absolute',
-                        height: '100%',
+                        backgroundColor: COLORS.greyOverlay,
+                        position: 'fixed',
+                        height: '100vh',
                         width: '100%',
                         display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        top: '0',
                     }}
                     onClick={() => {
                         reset();
@@ -108,7 +107,7 @@ export const VendorProductList = () => {
                 >
                     <div
                         style={{
-                            backgroundColor: 'white',
+                            backgroundColor: 'black',
                             padding: '20px',
                             maxWidth: '400px',
                             width: '100%',
@@ -118,6 +117,10 @@ export const VendorProductList = () => {
                             borderRadius: '10px',
                             justifyContent: 'center',
                             alignItems: 'center',
+                            position: 'fixed',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -70%)',
                         }}
                         onClick={(e) => e.stopPropagation()}
                     >

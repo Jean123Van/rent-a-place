@@ -28,10 +28,8 @@ const DatePickerButton = forwardRef<HTMLButtonElement, CustomInputProps>(
                 fontSize: '15px',
                 padding: '5px 10px',
                 borderRadius: '7px',
-                backgroundColor: 'transparent',
-                border: isError
-                    ? '1px solid red'
-                    : `1px solid ${COLORS.skintone}`,
+                backgroundColor: 'white',
+                border: isError ? '1px solid red' : `1px solid white`,
                 color: isError ? 'red' : 'black',
                 transition: 'all 0.2s',
             }}
@@ -77,15 +75,13 @@ export const DateInput = ({
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    borderBottom: isError
-                        ? '2px solid red'
-                        : `2px solid ${COLORS.skintone}`,
+                    borderBottom: isError ? '2px solid red' : `2px solid white`,
                     paddingBottom: '10px',
                     gap: '5px',
                     width: '100%',
                 }}
             >
-                <span style={{ color: isError ? 'red' : 'black' }}>
+                <span style={{ color: isError ? 'red' : 'white' }}>
                     Select dates:
                 </span>
                 <div
