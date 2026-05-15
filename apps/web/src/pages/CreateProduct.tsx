@@ -8,9 +8,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createProductFormSchema } from '../utils/schema/createProductFormSchema';
 import { useToast } from '../components/Toast/toastHook';
 import { BaseContainer } from '../components/container/BaseContainer';
+import { useRef, useState } from 'react';
 
 export const CreateProduct = () => {
     const { addToast } = useToast();
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
     const { control, handleSubmit, reset } = useForm<CreateProductInput>({
         resolver: zodResolver(createProductFormSchema),
@@ -47,6 +51,12 @@ export const CreateProduct = () => {
 
     const handleCreateProductBtn = (createProductInput: CreateProductInput) => {
         mutate(createProductInput);
+    };
+
+    const handleAttachFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+
+        setUploadedFiles((prev) => [prev, files].flat());
     };
 
     return (
@@ -142,6 +152,57 @@ export const CreateProduct = () => {
                             }
                         />
                     )}
+                />
+
+                <PrimaryButton
+                    onClick={() => {
+                        fileInputRef.current?.click();
+                    }}
+                >
+                    Select photos
+                </PrimaryButton>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '5px',
+                        height: '50px',
+                        marginTop: '5px',
+                    }}
+                >
+                    {uploadedFiles.map((file, index) => {
+                        const previewUrl = URL.createObjectURL(file);
+
+                        return (
+                            <div
+                                key={index}
+                                style={{
+                                    width: '50px',
+                                    height: '100%',
+                                    overflow: 'hidden',
+                                    borderRadius: '100%',
+                                }}
+                            >
+                                <img
+                                    style={{
+                                        height: '100%',
+                                        width: '100%',
+                                        objectFit: 'cover',
+                                    }}
+                                    src={previewUrl}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    hidden
+                    onChange={handleAttachFiles}
                 />
 
                 <div
