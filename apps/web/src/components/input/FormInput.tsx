@@ -1,4 +1,3 @@
-import { COLORS } from '../../styles/colors';
 import { SmallNote } from '../Text/SmallNote';
 
 interface FormInputProps {

@@ -18,17 +18,17 @@ export const CreateProduct = () => {
     const { addToast } = useToast();
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
     const [expandedImg, setExpandedImg] = useState<number | null>(null);
 
-    const expandedImgUrl = useMemo(() => {
-        if (expandedImg !== null) {
-            return URL.createObjectURL(uploadedFiles[expandedImg]);
-        }
-    }, [expandedImg]);
-
-    const { control, handleSubmit, reset } = useForm<CreateProductInput>({
+    const {
+        control,
+        handleSubmit,
+        reset,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm<CreateProductInput>({
         resolver: zodResolver(createProductFormSchema),
         criteriaMode: 'all',
         defaultValues: {
@@ -36,8 +36,17 @@ export const CreateProduct = () => {
             rate: '',
             units: '',
             description: '',
+            files: [],
         },
     });
+
+    const uploadedFiles = watch('files');
+
+    const expandedImgUrl = useMemo(() => {
+        if (expandedImg !== null) {
+            return URL.createObjectURL(uploadedFiles[expandedImg]);
+        }
+    }, [expandedImg]);
 
     const { mutate, isPending } = useMutation({
         mutationFn: createProduct,
@@ -72,7 +81,9 @@ export const CreateProduct = () => {
             return;
         }
 
-        setUploadedFiles((prev) => [prev, files].flat().slice(0, 5));
+        setValue('files', [uploadedFiles, files].flat().slice(0, 5), {
+            shouldValidate: true,
+        });
     };
 
     const handleCloseExpandedPreview = () => {
@@ -80,8 +91,10 @@ export const CreateProduct = () => {
     };
 
     const handleRemoveFile = (fileIndex: number) => {
-        setUploadedFiles((prev) =>
-            prev.filter((_, index) => fileIndex !== index),
+        setValue(
+            'files',
+            uploadedFiles.filter((_, index) => fileIndex !== index),
+            { shouldValidate: true },
         );
     };
 
@@ -322,6 +335,11 @@ export const CreateProduct = () => {
                     <SmallNote style={{ color: 'white' }}>
                         * Maximum of 5 images
                     </SmallNote>
+                    {errors.files && (
+                        <SmallNote style={{ color: 'red' }}>
+                            {errors.files.message}
+                        </SmallNote>
+                    )}
                 </div>
 
                 <div
