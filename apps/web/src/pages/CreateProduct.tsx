@@ -8,13 +8,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createProductFormSchema } from '../utils/schema/createProductFormSchema';
 import { useToast } from '../components/Toast/toastHook';
 import { BaseContainer } from '../components/container/BaseContainer';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { COLORS } from '../styles/colors';
+import { FaTimes } from 'react-icons/fa';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const CreateProduct = () => {
     const { addToast } = useToast();
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
+    const [expandedImg, setExpandedImg] = useState<number | null>(null);
+
+    const expandedImgUrl = useMemo(() => {
+        if (expandedImg !== null) {
+            return URL.createObjectURL(uploadedFiles[expandedImg]);
+        }
+    }, [expandedImg]);
 
     const { control, handleSubmit, reset } = useForm<CreateProductInput>({
         resolver: zodResolver(createProductFormSchema),
@@ -59,6 +70,10 @@ export const CreateProduct = () => {
         setUploadedFiles((prev) => [prev, files].flat());
     };
 
+    const handleCloseExpandedPreview = () => {
+        setExpandedImg(null);
+    };
+
     return (
         <div
             style={{
@@ -69,6 +84,131 @@ export const CreateProduct = () => {
                 alignItems: 'center',
             }}
         >
+            <AnimatePresence>
+                {expandedImg !== null && (
+                    <motion.div
+                        initial={{
+                            opacity: 0,
+                            y: 10,
+                        }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                        }}
+                        exit={{
+                            opacity: 0,
+                            y: 20,
+                        }}
+                        transition={{
+                            duration: 0.2,
+                        }}
+                        onClick={handleCloseExpandedPreview}
+                        style={{
+                            position: 'fixed',
+                            top: '0',
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: `${COLORS.greyOverlay}`,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            padding: '50px',
+                        }}
+                    >
+                        <div
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                                backgroundColor: 'black',
+                                maxWidth: '800px',
+                                maxHeight: '600px',
+                                width: '100%',
+                                height: '100%',
+                                padding: '15px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '10px',
+                            }}
+                        >
+                            <div
+                                style={{
+                                    height: '80%',
+                                    position: 'relative',
+                                }}
+                            >
+                                <FaTimes
+                                    color="white"
+                                    style={{
+                                        position: 'absolute',
+                                        top: '0',
+                                        right: '0',
+                                        backgroundColor: 'black',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={handleCloseExpandedPreview}
+                                />
+                                <img
+                                    src={expandedImgUrl}
+                                    style={{
+                                        objectFit: 'contain',
+                                        width: '100%',
+                                        height: '100%',
+                                    }}
+                                />
+                            </div>
+                            <div
+                                style={{
+                                    height: '20%',
+                                    display: 'flex',
+                                    gap: '8px',
+                                    flexDirection: 'row',
+                                }}
+                            >
+                                {uploadedFiles.map((file, index) => {
+                                    const previewUrl =
+                                        URL.createObjectURL(file);
+
+                                    return (
+                                        <div
+                                            key={index}
+                                            style={{
+                                                height: '100%',
+                                                width: '70px',
+                                                cursor: 'pointer',
+                                                position: 'relative',
+                                            }}
+                                            onClick={() => {
+                                                setExpandedImg(index);
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    position: 'absolute',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    backgroundColor:
+                                                        index !== expandedImg
+                                                            ? `${COLORS.greyOverlay}`
+                                                            : undefined,
+                                                }}
+                                            />
+                                            <img
+                                                src={previewUrl}
+                                                style={{
+                                                    height: '100%',
+                                                    width: '100%',
+                                                    objectFit: 'contain',
+                                                }}
+                                            />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <BaseContainer
                 style={{
                     maxWidth: '500px',
@@ -175,12 +315,16 @@ export const CreateProduct = () => {
 
                         return (
                             <div
+                                onClick={() => {
+                                    setExpandedImg(index);
+                                }}
                                 key={index}
                                 style={{
                                     width: '50px',
                                     height: '100%',
                                     overflow: 'hidden',
                                     borderRadius: '100%',
+                                    cursor: 'pointer',
                                 }}
                             >
                                 <img
