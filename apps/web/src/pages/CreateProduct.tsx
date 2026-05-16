@@ -74,6 +74,12 @@ export const CreateProduct = () => {
         setExpandedImg(null);
     };
 
+    const handleRemoveFile = (fileIndex: number) => {
+        setUploadedFiles((prev) =>
+            prev.filter((_, index) => fileIndex !== index),
+        );
+    };
+
     return (
         <div
             style={{
@@ -114,6 +120,7 @@ export const CreateProduct = () => {
                             justifyContent: 'center',
                             alignItems: 'center',
                             padding: '50px',
+                            zIndex: 2,
                         }}
                     >
                         <div
@@ -315,26 +322,48 @@ export const CreateProduct = () => {
 
                         return (
                             <div
-                                onClick={() => {
-                                    setExpandedImg(index);
-                                }}
-                                key={index}
                                 style={{
-                                    width: '50px',
-                                    height: '100%',
-                                    overflow: 'hidden',
-                                    borderRadius: '100%',
-                                    cursor: 'pointer',
+                                    position: 'relative',
                                 }}
                             >
-                                <img
+                                <FaTimes
+                                    onClick={() => handleRemoveFile(index)}
+                                    size={15}
                                     style={{
-                                        height: '100%',
-                                        width: '100%',
-                                        objectFit: 'cover',
+                                        color: 'white',
+                                        position: 'absolute',
+                                        top: '0',
+                                        right: '0',
+                                        zIndex: 1,
+                                        backgroundColor: 'black',
+                                        borderRadius: '100%',
+                                        padding: '3px',
+                                        cursor: 'pointer',
                                     }}
-                                    src={previewUrl}
                                 />
+                                <div
+                                    onClick={() => {
+                                        setExpandedImg(index);
+                                    }}
+                                    key={index}
+                                    style={{
+                                        width: '50px',
+                                        height: '100%',
+                                        overflow: 'hidden',
+                                        borderRadius: '100%',
+                                        cursor: 'pointer',
+                                        position: 'relative',
+                                    }}
+                                >
+                                    <img
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                            objectFit: 'cover',
+                                        }}
+                                        src={previewUrl}
+                                    />
+                                </div>
                             </div>
                         );
                     })}
