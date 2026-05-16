@@ -12,6 +12,7 @@ import { useMemo, useRef, useState } from 'react';
 import { COLORS } from '../styles/colors';
 import { FaTimes } from 'react-icons/fa';
 import { AnimatePresence, motion } from 'framer-motion';
+import { SmallNote } from '../components/Text/SmallNote';
 
 export const CreateProduct = () => {
     const { addToast } = useToast();
@@ -67,7 +68,11 @@ export const CreateProduct = () => {
     const handleAttachFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
 
-        setUploadedFiles((prev) => [prev, files].flat());
+        if (files.length === 5) {
+            return;
+        }
+
+        setUploadedFiles((prev) => [prev, files].flat().slice(0, 5));
     };
 
     const handleCloseExpandedPreview = () => {
@@ -300,21 +305,32 @@ export const CreateProduct = () => {
                         />
                     )}
                 />
-
-                <PrimaryButton
-                    onClick={() => {
-                        fileInputRef.current?.click();
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '4px',
                     }}
                 >
-                    Select photos
-                </PrimaryButton>
+                    <PrimaryButton
+                        onClick={() => {
+                            fileInputRef.current?.click();
+                        }}
+                    >
+                        Select photos
+                    </PrimaryButton>
+                    <SmallNote style={{ color: 'white' }}>
+                        * Maximum of 5 images
+                    </SmallNote>
+                </div>
+
                 <div
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
                         gap: '5px',
                         height: '50px',
-                        marginTop: '5px',
+                        marginTop: '10px',
                     }}
                 >
                     {uploadedFiles.map((file, index) => {
