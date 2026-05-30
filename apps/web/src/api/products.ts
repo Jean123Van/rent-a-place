@@ -1,13 +1,10 @@
 import axios from 'axios';
-import type { BookProductInput, CreateProductInput } from '../utils/types';
+import type { BookProductInput } from '../utils/types';
 import { api, apiCustomer } from './base';
 
-export const createProduct = async (createProductInput: CreateProductInput) => {
+export const createProduct = async (createProductInput: FormData) => {
     try {
-        return await api.post('/products/create', {
-            ...createProductInput,
-            rate: Number(createProductInput.rate),
-        });
+        return await api.post('/products/create', createProductInput);
     } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
             console.log(e.response?.data);

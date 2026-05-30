@@ -71,7 +71,18 @@ export const CreateProduct = () => {
     });
 
     const handleCreateProductBtn = (createProductInput: CreateProductInput) => {
-        mutate(createProductInput);
+        const formData = new FormData();
+
+        formData.append('title', createProductInput.title);
+        formData.append('rate', createProductInput.rate);
+        formData.append('units', createProductInput.units);
+        formData.append('description', createProductInput.description);
+
+        createProductInput.files.forEach((file) => {
+            formData.append('files', file);
+        });
+
+        mutate(formData);
     };
 
     const handleAttachFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -356,6 +367,7 @@ export const CreateProduct = () => {
 
                         return (
                             <div
+                                key={index}
                                 style={{
                                     position: 'relative',
                                 }}
@@ -379,7 +391,6 @@ export const CreateProduct = () => {
                                     onClick={() => {
                                         setExpandedImg(index);
                                     }}
-                                    key={index}
                                     style={{
                                         width: '50px',
                                         height: '100%',

@@ -4,9 +4,6 @@ import { TokenTypes } from '../utils/types';
 
 export const api = axios.create({
     baseURL: API_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
 });
 
 api.interceptors.request.use((config) => {
@@ -19,9 +16,6 @@ api.interceptors.request.use((config) => {
 
 export const apiCustomer = axios.create({
     baseURL: API_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
 });
 
 apiCustomer.interceptors.request.use((config) => {

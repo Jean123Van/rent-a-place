@@ -18,7 +18,11 @@ export class ProductsService {
         private bookingRepository: Repository<Booking>,
     ) {}
 
-    async createProduct(createProductData: CreateProductData, userId: string) {
+    async createProduct(
+        createProductData: CreateProductData,
+        userId: string,
+        files: Express.Multer.File[],
+    ) {
         const { rate, units, ...rest } = createProductData;
 
         const isTitleExists = await this.productRepository.findOne({

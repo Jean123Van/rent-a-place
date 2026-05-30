@@ -6,26 +6,33 @@ import {
     Request,
     Get,
     Param,
+    UploadedFiles,
+    UseInterceptors,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductData } from './dto/create-product.dto';
 import { VendorAuthGuard } from 'src/authentication/guards/vendor-guard';
 import { UserAuthGuard } from 'src/authentication/guards/user-guard';
 import { BookProductData } from './dto/book-product.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 
 @Controller('products')
 export class ProductsController {
     constructor(private readonly productsService: ProductsService) {}
 
     @Post('/create')
+    @UseInterceptors(FilesInterceptor('files', 5, { storage: memoryStorage() }))
     @UseGuards(VendorAuthGuard)
     createProduct(
+        @UploadedFiles() files: Express.Multer.File[],
         @Body() createProductData: CreateProductData,
         @Request() req,
     ) {
         return this.productsService.createProduct(
             createProductData,
             req.user.id,
+            files,
         );
     }
 
