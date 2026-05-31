@@ -8,6 +8,7 @@ import {
     OneToMany,
 } from 'typeorm';
 import { Booking } from './bookings.entity';
+import { ProductImage } from './product-image.entity';
 
 @Entity()
 export class Product {
@@ -36,4 +37,9 @@ export class Product {
 
     @OneToMany(() => Booking, (booking) => booking.product)
     booking: Booking[];
+
+    @OneToMany(() => ProductImage, (productImage) => productImage.product, {
+        cascade: true,
+    })
+    productImage: ProductImage[];
 }

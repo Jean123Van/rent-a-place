@@ -6,10 +6,13 @@ import { Product } from './products/entities/products.entity';
 import { ProductsModule } from './products/products.module';
 import { UserCustomer } from './authentication/entities/user-customer.entity';
 import { Booking } from './products/entities/bookings.entity';
+import { ProductImage } from './products/entities/product-image.entity';
+import { MinioModule } from './minio/minio.module';
 
 @Module({
     imports: [
         AuthenticationModule,
+        MinioModule,
         ProductsModule,
         TypeOrmModule.forRoot({
             type: 'postgres',
@@ -18,7 +21,13 @@ import { Booking } from './products/entities/bookings.entity';
             username: 'postgres',
             password: 'jean',
             database: 'BookingService',
-            entities: [UserVendor, Product, UserCustomer, Booking],
+            entities: [
+                UserVendor,
+                Product,
+                UserCustomer,
+                Booking,
+                ProductImage,
+            ],
             synchronize: true,
         }),
     ],

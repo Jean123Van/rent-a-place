@@ -5,10 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
 import { UserVendor } from 'src/authentication/entities/user-vendor.entity';
 import { Booking } from './entities/bookings.entity';
+import { MinioService } from 'src/minio/minio.service';
+import { ProductImage } from './entities/product-image.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Product, UserVendor, Booking])],
+    imports: [
+        TypeOrmModule.forFeature([Product, UserVendor, Booking, ProductImage]),
+    ],
     controllers: [ProductsController],
-    providers: [ProductsService],
+    providers: [ProductsService, MinioService],
 })
 export class ProductsModule {}

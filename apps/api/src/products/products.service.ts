@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { UserVendor } from 'src/authentication/entities/user-vendor.entity';
 import { BookProductData } from './dto/book-product.dto';
 import { Booking } from './entities/bookings.entity';
+import { MinioService } from 'src/minio/minio.service';
 
 @Injectable()
 export class ProductsService {
@@ -16,6 +17,7 @@ export class ProductsService {
         private userVendorRepository: Repository<UserVendor>,
         @InjectRepository(Booking)
         private bookingRepository: Repository<Booking>,
+        private minioService: MinioService,
     ) {}
 
     async createProduct(
@@ -35,11 +37,17 @@ export class ProductsService {
             );
         }
 
+        const productImageData = await this.minioService.uploadFiles(
+            'product-image',
+            files,
+        );
+
         return this.productRepository.save({
             ...rest,
             rate: Number(rate),
             units: Number(units),
             vendor: { id: userId },
+            productImage: productImageData,
         });
     }
 
