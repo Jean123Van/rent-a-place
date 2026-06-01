@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAllProducts } from '../api/products';
 import type { ProductData } from '../utils/types';
-import placeholder from '../assets/product-placeholder.jpg';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 import { ListContainer } from '../components/container/ListContainer';
-import { RowDetails } from '../components/Text/RowDetails';
+import { ProductListTile } from '../components/container/ProductListTile';
 
 export const VendorProducts = () => {
     const { data, isLoading } = useQuery({
@@ -30,85 +29,7 @@ export const VendorProducts = () => {
     return (
         <ListContainer>
             {data?.data.map((product: ProductData) => (
-                <div
-                    style={{
-                        border: `1px solid white`,
-                        borderRadius: '10px',
-
-                        padding: '10px',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        gap: '10px',
-                    }}
-                    key={product.id}
-                >
-                    <div
-                        style={{
-                            width: '40%',
-                            height: '200px',
-                            position: 'relative',
-                        }}
-                    >
-                        <div
-                            style={{
-                                position: 'absolute',
-                                bottom: 10,
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                backgroundColor: 'white',
-                                padding: '3px',
-                                borderRadius: '5px',
-                                border: '1px solid black',
-                            }}
-                        >
-                            <div
-                                style={{
-                                    height: '10px',
-                                    width: '10px',
-                                    borderRadius: '100%',
-                                    border: '2px solid grey',
-                                }}
-                            ></div>
-                        </div>
-                        <img
-                            src={product.productImage[0]?.url || placeholder}
-                            style={{
-                                objectFit: 'cover',
-                                width: '100%',
-                                height: '100%',
-                            }}
-                        />
-                    </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            flex: '1',
-                            gap: '5px',
-                        }}
-                    >
-                        <RowDetails
-                            title="Product name"
-                            value={product.title}
-                        />
-
-                        <RowDetails
-                            title="Description"
-                            value={product.description}
-                        />
-
-                        <RowDetails
-                            title="Rate"
-                            value={`₱ ${product.rate} / night`}
-                        />
-
-                        <RowDetails
-                            title="Created at"
-                            value={new Date(product.createdAt).toDateString()}
-                        />
-                    </div>
-                </div>
+                <ProductListTile product={product} key={product.id} />
             ))}
         </ListContainer>
     );
