@@ -43,12 +43,43 @@ export const VendorProducts = () => {
                     }}
                     key={product.id}
                 >
-                    <img
-                        src={product.productImage[0]?.url || placeholder}
+                    <div
                         style={{
                             width: '40%',
+                            height: '200px',
+                            position: 'relative',
                         }}
-                    />
+                    >
+                        <div
+                            style={{
+                                position: 'absolute',
+                                bottom: 10,
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                backgroundColor: 'white',
+                                padding: '3px',
+                                borderRadius: '5px',
+                                border: '1px solid black',
+                            }}
+                        >
+                            <div
+                                style={{
+                                    height: '10px',
+                                    width: '10px',
+                                    borderRadius: '100%',
+                                    border: '2px solid grey',
+                                }}
+                            ></div>
+                        </div>
+                        <img
+                            src={product.productImage[0]?.url || placeholder}
+                            style={{
+                                objectFit: 'cover',
+                                width: '100%',
+                                height: '100%',
+                            }}
+                        />
+                    </div>
                     <div
                         style={{
                             display: 'flex',
