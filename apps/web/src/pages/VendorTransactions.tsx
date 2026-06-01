@@ -2,10 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { getVendorBookings } from '../api/products';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 import type { VendorBooking } from '../utils/types';
-import placeholder from '../assets/product-placeholder.jpg';
-import { COLORS } from '../styles/colors';
 import { NoResults } from '../components/Modal/NoResults';
 import { BaseContainer } from '../components/container/BaseContainer';
+import { ProductImageTile } from '../components/container/ProductImageTile';
 
 export const VendorTransactions = () => {
     const { data, isLoading } = useQuery({
@@ -61,7 +60,10 @@ export const VendorTransactions = () => {
                             alignItems: 'center',
                         }}
                     >
-                        <img src={placeholder} style={{ width: '40%' }} />
+                        <ProductImageTile
+                            style={{ width: '60%' }}
+                            images={booking.product.productImage || []}
+                        />
                         <div
                             style={{
                                 display: 'flex',

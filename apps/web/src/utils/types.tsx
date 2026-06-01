@@ -23,6 +23,11 @@ export interface SigninInput {
     password: string;
 }
 
+export interface ProductImage {
+    id: string;
+    url: string;
+}
+
 export interface ProductData {
     id: string;
     createdAt: string;
@@ -30,10 +35,7 @@ export interface ProductData {
     rate: number;
     units: number;
     description: string;
-    productImage: {
-        id: string;
-        url: string;
-    }[];
+    productImage: ProductImage[];
 }
 
 export interface VendorData {

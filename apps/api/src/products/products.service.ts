@@ -101,11 +101,28 @@ export class ProductsService {
         });
     }
 
-    getBookingsByVendor(vendorId: string) {
-        return this.bookingRepository.find({
+    async getBookingsByVendor(vendorId: string) {
+        const bookings = await this.bookingRepository.find({
             where: { vendor: { id: vendorId } },
             order: { createdAt: 'DESC' },
-            relations: ['customer', 'product'],
+            relations: ['customer', 'product', 'product.productImage'],
+        });
+
+        return bookings.map((booking) => {
+            const product = booking.product;
+
+            const newImages = product.productImage.map((image) => ({
+                id: image.id,
+                url: this.minioService.getPublicUrl(
+                    'product-image',
+                    image.fileName,
+                ),
+            }));
+
+            return {
+                ...booking,
+                product: { ...product, productImage: newImages },
+            };
         });
     }
 }
