@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { FormInput } from '../components/input/FormInput';
-import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import { SmallNote } from '../components/Text/SmallNote';
 import { Controller, useForm } from 'react-hook-form';
 import type { SignupVendorInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { signup } from '../api/authentication';
+import { BaseContainer } from '../components/container/BaseContainer';
 
 export const Signup = () => {
     const { control, handleSubmit } = useForm<SignupVendorInput>();
@@ -28,7 +28,7 @@ export const Signup = () => {
                 alignItems: 'center',
             }}
         >
-            <ShadowedContainer
+            <BaseContainer
                 style={{
                     width: '100%',
                     maxWidth: '400px',
@@ -110,13 +110,13 @@ export const Signup = () => {
                                 Sign up
                             </PrimaryButton>
                         </form>
-                        <SmallNote>
+                        <SmallNote style={{ color: 'white' }}>
                             Already have an account?
                             <Link to="/signin">Login</Link> instead.
                         </SmallNote>
                     </div>
                 )}
-            </ShadowedContainer>
+            </BaseContainer>
         </div>
     );
 };

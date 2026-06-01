@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { PrimaryButton } from '../components/button/PrimaryButton';
-import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import { FormInput } from '../components/input/FormInput';
 import { SmallNote } from '../components/Text/SmallNote';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +8,7 @@ import type { SigninVendorInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { signin } from '../api/authentication';
 import { useEffect } from 'react';
+import { BaseContainer } from '../components/container/BaseContainer';
 
 export const Signin = () => {
     const navigate = useNavigate();
@@ -44,7 +44,7 @@ export const Signin = () => {
                 alignItems: 'center',
             }}
         >
-            <ShadowedContainer
+            <BaseContainer
                 style={{
                     width: '100%',
                     maxWidth: '400px',
@@ -62,6 +62,7 @@ export const Signin = () => {
                         flexDirection: 'column',
                         alignItems: 'center',
                         width: '100%',
+                        marginBottom: '10px',
                     }}
                 >
                     <Controller
@@ -95,11 +96,11 @@ export const Signin = () => {
                         Log in
                     </PrimaryButton>
                 </form>
-                <SmallNote>
+                <SmallNote style={{ color: 'white' }}>
                     Don't have an account yet? Signup{' '}
                     <Link to="/signup">here</Link>.
                 </SmallNote>
-            </ShadowedContainer>
+            </BaseContainer>
         </div>
     );
 };

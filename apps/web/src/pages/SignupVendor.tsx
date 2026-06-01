@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { FormInput } from '../components/input/FormInput';
-import { ShadowedContainer } from '../components/container/ShadowedContainer';
 import { SmallNote } from '../components/Text/SmallNote';
 import { Controller, useForm } from 'react-hook-form';
 import type { SignupVendorInput } from '../utils/types';
@@ -10,6 +9,7 @@ import { signupVendor } from '../api/authentication';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupVendorFormSchema } from '../utils/schema/signupVendorFormSchema';
 import { useToast } from '../components/Toast/toastHook';
+import { BaseContainer } from '../components/container/BaseContainer';
 
 export const SignupVendor = () => {
     const { addToast } = useToast();
@@ -52,7 +52,7 @@ export const SignupVendor = () => {
                 alignItems: 'center',
             }}
         >
-            <ShadowedContainer
+            <BaseContainer
                 style={{
                     width: '100%',
                     maxWidth: '400px',
@@ -154,13 +154,13 @@ export const SignupVendor = () => {
                                 Sign up
                             </PrimaryButton>
                         </form>
-                        <SmallNote>
+                        <SmallNote style={{ color: 'white' }}>
                             Already have an account?{' '}
                             <Link to="/signin/vendor">Login</Link> instead.
                         </SmallNote>
                     </div>
                 )}
-            </ShadowedContainer>
+            </BaseContainer>
         </div>
     );
 };

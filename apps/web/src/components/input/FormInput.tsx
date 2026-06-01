@@ -50,7 +50,9 @@ export const FormInput = ({
                     outline: 'none',
                 }}
             />
-            {hint && !isError && <SmallNote>{hint}</SmallNote>}
+            {hint && !isError && (
+                <SmallNote style={{ color: 'white' }}>{hint}</SmallNote>
+            )}
 
             {isError &&
                 error?.map((error, i) => (
