@@ -4,7 +4,6 @@ import { bookProduct, getProductsByVendor } from '../api/products';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 import { type BookProductForm, type ProductData } from '../utils/types';
 import { COLORS } from '../styles/colors';
-import placeholder from '../assets/product-placeholder.jpg';
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { useState } from 'react';
 import { DateInput } from '../components/input/DateInput';
@@ -15,6 +14,7 @@ import { bookProductFormSchema } from '../utils/schema/bookProductFormSchema';
 import { useToast } from '../components/Toast/toastHook';
 import { ListContainer } from '../components/container/ListContainer';
 import { RowDetails } from '../components/Text/RowDetails';
+import { ProductImageTile } from '../components/container/ProductImageTile';
 
 export const VendorProductList = () => {
     const { addToast } = useToast();
@@ -177,11 +177,9 @@ export const VendorProductList = () => {
                         }}
                         key={product.id}
                     >
-                        <img
-                            src={placeholder}
-                            style={{
-                                width: '40%',
-                            }}
+                        <ProductImageTile
+                            images={product.productImage}
+                            style={{ width: '40%' }}
                         />
                         <div>
                             <div

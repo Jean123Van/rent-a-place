@@ -1,11 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { getUserBookings } from '../api/products';
-import placeholder from '../assets/product-placeholder.jpg';
 import type { UserBooking } from '../utils/types';
-import { COLORS } from '../styles/colors';
 import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSpinner';
 import { NoResults } from '../components/Modal/NoResults';
 import { BaseContainer } from '../components/container/BaseContainer';
+import { ProductImageTile } from '../components/container/ProductImageTile';
 
 export const CustomerTransactions = () => {
     const { data, isLoading } = useQuery({
@@ -61,7 +60,10 @@ export const CustomerTransactions = () => {
                             alignItems: 'center',
                         }}
                     >
-                        <img src={placeholder} style={{ width: '40%' }} />
+                        <ProductImageTile
+                            images={booking.product.productImage}
+                            style={{ width: '60%' }}
+                        />
                         <div
                             style={{
                                 display: 'flex',

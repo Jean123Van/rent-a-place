@@ -61,15 +61,11 @@ export class ProductsService {
         });
 
         return products.map((product) => {
-            const imgUrl = product.productImage.map((image) => ({
-                id: image.id,
-                url: this.minioService.getPublicUrl(
-                    'product-image',
-                    image.fileName,
-                ),
-            }));
+            const images = this.minioService.getPublicUrls(
+                product.productImage,
+            );
 
-            return { ...product, productImage: imgUrl };
+            return { ...product, productImage: images };
         });
     }
 
@@ -93,11 +89,23 @@ export class ProductsService {
         });
     }
 
-    getBookingsByCustomer(userId: string) {
-        return this.bookingRepository.find({
-            relations: ['vendor', 'product'],
+    async getBookingsByCustomer(userId: string) {
+        const bookings = await this.bookingRepository.find({
+            relations: ['vendor', 'product', 'product.productImage'],
             where: { customer: { id: userId } },
             order: { createdAt: 'DESC' },
+        });
+
+        return bookings.map((booking) => {
+            const product = booking.product;
+            const newImages = this.minioService.getPublicUrls(
+                product.productImage,
+            );
+
+            return {
+                ...booking,
+                product: { ...product, productImage: newImages },
+            };
         });
     }
 
@@ -111,13 +119,9 @@ export class ProductsService {
         return bookings.map((booking) => {
             const product = booking.product;
 
-            const newImages = product.productImage.map((image) => ({
-                id: image.id,
-                url: this.minioService.getPublicUrl(
-                    'product-image',
-                    image.fileName,
-                ),
-            }));
+            const newImages = this.minioService.getPublicUrls(
+                product.productImage,
+            );
 
             return {
                 ...booking,
