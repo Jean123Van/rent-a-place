@@ -30,6 +30,10 @@ export interface ProductData {
     rate: number;
     units: number;
     description: string;
+    productImage: {
+        id: string;
+        url: string;
+    }[];
 }
 
 export interface VendorData {

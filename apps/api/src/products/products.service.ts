@@ -51,10 +51,25 @@ export class ProductsService {
         });
     }
 
-    getAllProducts(userId: string) {
-        return this.productRepository.find({
+    async getAllProducts(userId: string) {
+        const products = await this.productRepository.find({
             where: { vendor: { id: userId } },
             order: { createdAt: 'DESC' },
+            relations: {
+                productImage: true,
+            },
+        });
+
+        return products.map((product) => {
+            const imgUrl = product.productImage.map((image) => ({
+                id: image.id,
+                url: this.minioService.getPublicUrl(
+                    'product-image',
+                    image.fileName,
+                ),
+            }));
+
+            return { ...product, productImage: imgUrl };
         });
     }
 

@@ -44,7 +44,7 @@ export const VendorProducts = () => {
                     key={product.id}
                 >
                     <img
-                        src={placeholder}
+                        src={product.productImage[0]?.url || placeholder}
                         style={{
                             width: '40%',
                         }}

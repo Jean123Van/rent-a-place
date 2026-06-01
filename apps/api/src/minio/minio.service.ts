@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as Minio from 'minio';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class MinioService {
@@ -15,14 +16,20 @@ export class MinioService {
         });
     }
 
-    async uploadFile(bucket: string, fileName: string, file: Buffer) {
-        return this.client.putObject(bucket, fileName, file);
+    getPublicUrl(bucket: string, fileName: string) {
+        return `http://localhost:9000/${bucket}/${fileName}`;
+    }
+
+    async uploadFile(bucket: string, file: Express.Multer.File) {
+        const fileName = `${Date.now()}-${randomUUID()}`;
+
+        return this.client.putObject(bucket, fileName, file.buffer);
     }
 
     async uploadFiles(bucket: string, files: Express.Multer.File[]) {
         return Promise.all(
             files.map(async (file) => {
-                const fileName = `${Date.now()}-${file.originalname}`;
+                const fileName = `${Date.now()}-${randomUUID()}`;
 
                 await this.client.putObject(bucket, fileName, file.buffer);
 
