@@ -16,16 +16,21 @@ export const SignupVendor = () => {
     const { addToast } = useToast();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const { control, handleSubmit, watch, setValue } =
-        useForm<SignupVendorInput>({
-            resolver: zodResolver(signupVendorFormSchema),
-            criteriaMode: 'all',
-            defaultValues: {
-                username: '',
-                email: '',
-                password: '',
-            },
-        });
+    const {
+        control,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm<SignupVendorInput>({
+        resolver: zodResolver(signupVendorFormSchema),
+        criteriaMode: 'all',
+        defaultValues: {
+            username: '',
+            email: '',
+            password: '',
+        },
+    });
 
     const profileImg = watch('file');
 
@@ -45,7 +50,14 @@ export const SignupVendor = () => {
     });
 
     const handleSignupClick = (data: SignupVendorInput) => {
-        mutate(data);
+        const formData = new FormData();
+
+        formData.append('username', data.username);
+        formData.append('email', data.email);
+        formData.append('password', data.password);
+        formData.append('file', data.file);
+
+        mutate(formData);
     };
 
     return (
@@ -173,43 +185,69 @@ export const SignupVendor = () => {
                                     onChange={(e) => {
                                         const file = Array.from(
                                             e.target.files || [],
-                                        );
-                                        setValue('file', file[0], {
+                                        )[0];
+
+                                        if (!file) {
+                                            return;
+                                        }
+
+                                        setValue('file', file, {
                                             shouldValidate: true,
                                         });
                                     }}
                                 />
                                 <div
                                     style={{
-                                        border: '1px solid white',
-                                        width: '100px',
-                                        height: '100px',
-                                        borderRadius: '100%',
-                                        overflow: 'hidden',
+                                        flex: 1,
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'flex-end',
                                     }}
                                 >
-                                    <img
-                                        src={
-                                            profileImg
-                                                ? URL.createObjectURL(
-                                                      profileImg,
-                                                  )
-                                                : undefined
-                                        }
+                                    <div
                                         style={{
-                                            height: '100%',
-                                            width: '100%',
-                                            objectFit: 'cover',
+                                            border: '1px solid white',
+                                            width: '100px',
+                                            height: '100px',
+                                            borderRadius: '100%',
+                                            overflow: 'hidden',
                                         }}
-                                    />
+                                    >
+                                        {profileImg && (
+                                            <img
+                                                src={URL.createObjectURL(
+                                                    profileImg,
+                                                )}
+                                                style={{
+                                                    height: '100%',
+                                                    width: '100%',
+                                                    objectFit: 'cover',
+                                                }}
+                                            />
+                                        )}
+                                    </div>
                                 </div>
-                                <PrimaryButton
-                                    onClick={() => {
-                                        fileInputRef.current?.click();
+                                <div
+                                    style={{
+                                        flex: 1,
+                                        gap: '5px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
                                     }}
                                 >
-                                    Upload photo
-                                </PrimaryButton>
+                                    <PrimaryButton
+                                        onClick={() => {
+                                            fileInputRef.current?.click();
+                                        }}
+                                    >
+                                        Upload photo
+                                    </PrimaryButton>
+                                    {errors.file && (
+                                        <SmallNote style={{ color: 'red' }}>
+                                            {errors.file.message as string}
+                                        </SmallNote>
+                                    )}
+                                </div>
                             </div>
 
                             <PrimaryButton

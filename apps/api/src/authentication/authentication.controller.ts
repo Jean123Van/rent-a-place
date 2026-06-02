@@ -1,9 +1,16 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Post,
+    UploadedFile,
+    UseInterceptors,
+} from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { SignupVendorData } from './dto/signup-vendor.dto';
 import { SigninVendorData } from './dto/signin-vendor.dto';
 import { SignupData } from './dto/signup.dto';
 import { SigninData } from './dto/signin.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthenticationController {
@@ -11,8 +18,12 @@ export class AuthenticationController {
         private readonly authenticationService: AuthenticationService,
     ) {}
 
+    @UseInterceptors(FilesInterceptor('file'))
     @Post('/signup/vendor')
-    signupVendor(@Body() signupVendorData: SignupVendorData) {
+    signupVendor(
+        @Body() signupVendorData: SignupVendorData,
+        @UploadedFile() file: Express.Multer.File,
+    ) {
         return this.authenticationService.signupVendor(signupVendorData);
     }
 

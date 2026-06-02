@@ -55,5 +55,7 @@ export const signupVendorFormSchema = z.object({
             });
         }
     }),
-    file: z.instanceof(File).nonoptional('Image is required.'),
+    file: z.any().refine((file) => file instanceof File, {
+        message: 'Business logo is required.',
+    }),
 });
