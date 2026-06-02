@@ -11,8 +11,10 @@ import { useEffect } from 'react';
 import { BaseContainer } from '../components/container/BaseContainer';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signInFormSchema } from '../utils/schema/signInFormSchema';
+import { useToast } from '../components/Toast/toastHook';
 
 export const SigninVendor = () => {
+    const { addToast } = useToast();
     const navigate = useNavigate();
 
     const { control, handleSubmit } = useForm<SignInVendorInput>({
@@ -37,6 +39,17 @@ export const SigninVendor = () => {
         onSuccess: (data) => {
             localStorage.setItem('vendor-token', data?.data.access_token);
             navigate('/create-product');
+        },
+        onError: (error: any) => {
+            if (error?.response?.data.statusCode === 401) {
+                addToast(error?.response?.data.message, 'error');
+                return;
+            }
+
+            addToast(
+                'Something went wrong. Please try again later or contact support.',
+                'error',
+            );
         },
     });
 
