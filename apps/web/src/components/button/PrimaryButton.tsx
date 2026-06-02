@@ -1,4 +1,3 @@
-import { COLORS } from '../../styles/colors';
 import { LoadingSpinner } from '../Animation/LoadingSpinner/LoadingSpinner';
 import './primarybutton.css';
 
@@ -7,6 +6,7 @@ interface PrimaryButtonProps {
     onClick?: () => void;
     isLoading?: boolean;
     isDisabled?: boolean;
+    style?: React.CSSProperties;
 }
 
 export const PrimaryButton = ({
@@ -14,6 +14,7 @@ export const PrimaryButton = ({
     onClick,
     isLoading,
     isDisabled,
+    style,
 }: PrimaryButtonProps) => {
     return isLoading ? (
         <LoadingSpinner />
@@ -21,6 +22,7 @@ export const PrimaryButton = ({
         <button
             className="main-button"
             style={{
+                ...style,
                 border: isDisabled ? '1px solid gray' : `1px solid white`,
             }}
             onClick={onClick}

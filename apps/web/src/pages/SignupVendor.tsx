@@ -10,19 +10,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signupVendorFormSchema } from '../utils/schema/signupVendorFormSchema';
 import { useToast } from '../components/Toast/toastHook';
 import { BaseContainer } from '../components/container/BaseContainer';
+import { useRef } from 'react';
 
 export const SignupVendor = () => {
     const { addToast } = useToast();
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const { control, handleSubmit } = useForm<SignupVendorInput>({
-        resolver: zodResolver(signupVendorFormSchema),
-        criteriaMode: 'all',
-        defaultValues: {
-            username: '',
-            email: '',
-            password: '',
-        },
-    });
+    const { control, handleSubmit, watch, setValue } =
+        useForm<SignupVendorInput>({
+            resolver: zodResolver(signupVendorFormSchema),
+            criteriaMode: 'all',
+            defaultValues: {
+                username: '',
+                email: '',
+                password: '',
+            },
+        });
+
+    const profileImg = watch('file');
 
     const { mutate, isPending, isSuccess } = useMutation({
         mutationFn: signupVendor,
@@ -147,9 +152,70 @@ export const SignupVendor = () => {
                                     />
                                 )}
                             />
+
+                            <div
+                                style={{
+                                    width: '100%',
+
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    gap: '10px',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <input
+                                    type="file"
+                                    multiple={false}
+                                    accept="image/*"
+                                    hidden
+                                    ref={fileInputRef}
+                                    onChange={(e) => {
+                                        const file = Array.from(
+                                            e.target.files || [],
+                                        );
+                                        setValue('file', file[0], {
+                                            shouldValidate: true,
+                                        });
+                                    }}
+                                />
+                                <div
+                                    style={{
+                                        border: '1px solid white',
+                                        width: '100px',
+                                        height: '100px',
+                                        borderRadius: '100%',
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    <img
+                                        src={
+                                            profileImg
+                                                ? URL.createObjectURL(
+                                                      profileImg,
+                                                  )
+                                                : undefined
+                                        }
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                            objectFit: 'cover',
+                                        }}
+                                    />
+                                </div>
+                                <PrimaryButton
+                                    onClick={() => {
+                                        fileInputRef.current?.click();
+                                    }}
+                                >
+                                    Upload photo
+                                </PrimaryButton>
+                            </div>
+
                             <PrimaryButton
                                 onClick={handleSubmit(handleSignupClick)}
                                 isLoading={isPending}
+                                style={{ marginTop: '20px' }}
                             >
                                 Sign up
                             </PrimaryButton>
