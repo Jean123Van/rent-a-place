@@ -4,16 +4,27 @@ import { FormInput } from '../components/input/FormInput';
 import { SmallNote } from '../components/Text/SmallNote';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
-import type { SigninVendorInput } from '../utils/types';
+import type { SignInInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { signin } from '../api/authentication';
 import { useEffect } from 'react';
 import { BaseContainer } from '../components/container/BaseContainer';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signInFormSchema } from '../utils/schema/signInFormSchema';
+import { useToast } from '../components/Toast/toastHook';
 
 export const Signin = () => {
+    const { addToast } = useToast();
     const navigate = useNavigate();
 
-    const { control, handleSubmit } = useForm<SigninVendorInput>();
+    const { control, handleSubmit } = useForm<SignInInput>({
+        criteriaMode: 'all',
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+        resolver: zodResolver(signInFormSchema),
+    });
 
     useEffect(() => {
         const token = localStorage.getItem('customer-token');
@@ -29,9 +40,20 @@ export const Signin = () => {
             localStorage.setItem('customer-token', data?.data.access_token);
             navigate('/customer/vendor-list');
         },
+        onError: (error: any) => {
+            if (error?.response?.data.statusCode === 401) {
+                addToast(error?.response?.data.message, 'error');
+                return;
+            }
+
+            addToast(
+                'Something went wrong. Please try again later or contact support.',
+                'error',
+            );
+        },
     });
 
-    const handleSigninClick = (signinVendorInputData: SigninVendorInput) => {
+    const handleSigninClick = (signinVendorInputData: SignInInput) => {
         mutate(signinVendorInputData);
     };
 
@@ -68,11 +90,16 @@ export const Signin = () => {
                     <Controller
                         control={control}
                         name="email"
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                             <FormInput
                                 label="Email"
                                 onChange={field.onChange}
                                 value={field.value}
+                                error={
+                                    Object.values(
+                                        error?.types || [],
+                                    ).flat() as string[]
+                                }
                             />
                         )}
                     />
@@ -80,12 +107,17 @@ export const Signin = () => {
                     <Controller
                         control={control}
                         name="password"
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                             <FormInput
                                 label="Password"
                                 onChange={field.onChange}
                                 value={field.value}
                                 type={'password'}
+                                error={
+                                    Object.values(
+                                        error?.types || [],
+                                    ).flat() as string[]
+                                }
                             />
                         )}
                     />

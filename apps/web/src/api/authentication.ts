@@ -1,6 +1,5 @@
 import type {
-    SigninInput,
-    SignInVendorInput,
+    SignInInput,
     SignupInput,
     SignupVendorInput,
 } from '../utils/types';
@@ -21,9 +20,7 @@ export const signupVendor = async (signupVendorInput: SignupVendorInput) => {
     }
 };
 
-export const signinVendor = async (
-    signinVendorInputData: SignInVendorInput,
-) => {
+export const signinVendor = async (signinVendorInputData: SignInInput) => {
     try {
         return await api.post('/auth/signin/vendor', signinVendorInputData);
     } catch (e: unknown) {
@@ -49,7 +46,7 @@ export const signup = async (signupInput: SignupInput) => {
     }
 };
 
-export const signin = async (signinInput: SigninInput) => {
+export const signin = async (signinInput: SignInInput) => {
     try {
         return await api.post('/auth/signin', signinInput);
     } catch (e: unknown) {
@@ -58,5 +55,7 @@ export const signin = async (signinInput: SigninInput) => {
         } else {
             console.log(e);
         }
+
+        throw e;
     }
 };

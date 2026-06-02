@@ -4,7 +4,7 @@ import { FormInput } from '../components/input/FormInput';
 import { SmallNote } from '../components/Text/SmallNote';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
-import type { SignInVendorInput } from '../utils/types';
+import type { SignInInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { signinVendor } from '../api/authentication';
 import { useEffect } from 'react';
@@ -17,7 +17,7 @@ export const SigninVendor = () => {
     const { addToast } = useToast();
     const navigate = useNavigate();
 
-    const { control, handleSubmit } = useForm<SignInVendorInput>({
+    const { control, handleSubmit } = useForm<SignInInput>({
         criteriaMode: 'all',
         defaultValues: {
             email: '',
@@ -53,7 +53,7 @@ export const SigninVendor = () => {
         },
     });
 
-    const handleSigninClick = (signinVendorInputData: SignInVendorInput) => {
+    const handleSigninClick = (signinVendorInputData: SignInInput) => {
         mutate(signinVendorInputData);
     };
 

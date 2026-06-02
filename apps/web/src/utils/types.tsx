@@ -7,15 +7,10 @@ import type { signInFormSchema } from './schema/signInFormSchema';
 export type SignupVendorInput = z.infer<typeof signupVendorFormSchema>;
 export type BookProductForm = z.infer<typeof bookProductFormSchema>;
 export type CreateProductInput = z.infer<typeof createProductFormSchema>;
-export type SignInVendorInput = z.infer<typeof signInFormSchema>;
+export type SignInInput = z.infer<typeof signInFormSchema>;
 
 export interface SignupInput {
     username: string;
-    email: string;
-    password: string;
-}
-
-export interface SigninInput {
     email: string;
     password: string;
 }
