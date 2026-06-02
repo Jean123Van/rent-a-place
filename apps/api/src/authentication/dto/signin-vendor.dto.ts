@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class SigninVendorData {
-    @IsEmail()
+    @IsNotEmpty()
     email: string;
 
     @IsNotEmpty()

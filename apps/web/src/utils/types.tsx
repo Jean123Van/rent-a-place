@@ -2,18 +2,15 @@ import type z from 'zod';
 import type { signupVendorFormSchema } from './schema/signupVendorFormSchema';
 import type { bookProductFormSchema } from './schema/bookProductFormSchema';
 import type { createProductFormSchema } from './schema/createProductFormSchema';
+import type { signInFormSchema } from './schema/signInFormSchema';
 
 export type SignupVendorInput = z.infer<typeof signupVendorFormSchema>;
 export type BookProductForm = z.infer<typeof bookProductFormSchema>;
 export type CreateProductInput = z.infer<typeof createProductFormSchema>;
+export type SignInVendorInput = z.infer<typeof signInFormSchema>;
 
 export interface SignupInput {
     username: string;
-    email: string;
-    password: string;
-}
-
-export interface SigninVendorInput {
     email: string;
     password: string;
 }

@@ -1,6 +1,6 @@
 import type {
     SigninInput,
-    SigninVendorInput,
+    SignInVendorInput,
     SignupInput,
     SignupVendorInput,
 } from '../utils/types';
@@ -22,7 +22,7 @@ export const signupVendor = async (signupVendorInput: SignupVendorInput) => {
 };
 
 export const signinVendor = async (
-    signinVendorInputData: SigninVendorInput,
+    signinVendorInputData: SignInVendorInput,
 ) => {
     try {
         return await api.post('/auth/signin/vendor', signinVendorInputData);
@@ -32,6 +32,8 @@ export const signinVendor = async (
         } else {
             console.log(e);
         }
+
+        throw e;
     }
 };
 

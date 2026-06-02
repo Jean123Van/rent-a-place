@@ -4,16 +4,25 @@ import { FormInput } from '../components/input/FormInput';
 import { SmallNote } from '../components/Text/SmallNote';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
-import type { SigninVendorInput } from '../utils/types';
+import type { SignInVendorInput } from '../utils/types';
 import { useMutation } from '@tanstack/react-query';
 import { signinVendor } from '../api/authentication';
 import { useEffect } from 'react';
 import { BaseContainer } from '../components/container/BaseContainer';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signInFormSchema } from '../utils/schema/signInFormSchema';
 
 export const SigninVendor = () => {
     const navigate = useNavigate();
 
-    const { control, handleSubmit } = useForm<SigninVendorInput>();
+    const { control, handleSubmit } = useForm<SignInVendorInput>({
+        criteriaMode: 'all',
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+        resolver: zodResolver(signInFormSchema),
+    });
 
     useEffect(() => {
         const token = localStorage.getItem('vendor-token');
@@ -31,7 +40,7 @@ export const SigninVendor = () => {
         },
     });
 
-    const handleSigninClick = (signinVendorInputData: SigninVendorInput) => {
+    const handleSigninClick = (signinVendorInputData: SignInVendorInput) => {
         mutate(signinVendorInputData);
     };
 
@@ -68,11 +77,16 @@ export const SigninVendor = () => {
                     <Controller
                         control={control}
                         name="email"
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                             <FormInput
                                 label="Email"
                                 onChange={field.onChange}
                                 value={field.value}
+                                error={
+                                    Object.values(
+                                        error?.types || [],
+                                    ).flat() as string[]
+                                }
                             />
                         )}
                     />
@@ -80,12 +94,17 @@ export const SigninVendor = () => {
                     <Controller
                         control={control}
                         name="password"
-                        render={({ field }) => (
+                        render={({ field, fieldState: { error } }) => (
                             <FormInput
                                 label="Password"
                                 onChange={field.onChange}
                                 value={field.value}
                                 type={'password'}
+                                error={
+                                    Object.values(
+                                        error?.types || [],
+                                    ).flat() as string[]
+                                }
                             />
                         )}
                     />
