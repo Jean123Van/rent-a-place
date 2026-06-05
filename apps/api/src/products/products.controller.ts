@@ -8,6 +8,7 @@ import {
     Param,
     UploadedFiles,
     UseInterceptors,
+    Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductData } from './dto/create-product.dto';
@@ -16,6 +17,7 @@ import { UserAuthGuard } from 'src/authentication/guards/user-guard';
 import { BookProductData } from './dto/book-product.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
+import { Pagination } from './dto/pagination.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -38,8 +40,11 @@ export class ProductsController {
 
     @Get('/find-all')
     @UseGuards(VendorAuthGuard)
-    getAllProducts(@Request() req) {
-        return this.productsService.getAllProducts(req.user.id);
+    getAllProducts(@Request() req, @Query() pagination: Pagination) {
+        return this.productsService.getAllProducts(
+            req.user.id,
+            pagination.page,
+        );
     }
 
     @Post('/book')

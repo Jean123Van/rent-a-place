@@ -51,22 +51,32 @@ export class ProductsService {
         });
     }
 
-    async getAllProducts(userId: string) {
-        const products = await this.productRepository.find({
+    async getAllProducts(userId: string, page?: number) {
+        const pageNum = page || 1;
+        const limit = 10;
+
+        const [products, total] = await this.productRepository.findAndCount({
             where: { vendor: { id: userId } },
             order: { createdAt: 'DESC' },
+            skip: (pageNum - 1) * limit,
+            take: limit,
             relations: {
                 productImage: true,
             },
         });
 
-        return products.map((product) => {
+        const formattedProducts = products.map((product) => {
             const images = this.minioService.getPublicUrls(
                 product.productImage,
             );
 
             return { ...product, productImage: images };
         });
+
+        return {
+            products: formattedProducts,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
     async getAllVendors() {

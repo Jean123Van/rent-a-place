@@ -16,9 +16,11 @@ export const createProduct = async (createProductInput: FormData) => {
     }
 };
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (currentPage: number) => {
     try {
-        return await api.get('/products/find-all');
+        return await api.get('/products/find-all', {
+            params: { page: currentPage },
+        });
     } catch (e) {
         console.log(e);
     }

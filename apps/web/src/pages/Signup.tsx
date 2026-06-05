@@ -40,6 +40,7 @@ export const Signup = () => {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
+                            color: 'white',
                         }}
                     >
                         <h3>Account created successfully!</h3>

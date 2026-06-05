@@ -88,11 +88,9 @@ export const CreateProduct = () => {
     const handleAttachFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
 
-        if (files.length === 5) {
-            return;
-        }
+        const allFiles = [uploadedFiles, files].flat().slice(0, 5);
 
-        setValue('files', [uploadedFiles, files].flat().slice(0, 5), {
+        setValue('files', allFiles, {
             shouldValidate: true,
         });
     };

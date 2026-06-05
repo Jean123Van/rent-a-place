@@ -164,7 +164,7 @@ export const VendorProductList = () => {
             )}
 
             <ListContainer>
-                {data?.data.map((product: ProductData) => (
+                {data?.data.products.map((product: ProductData) => (
                     <div
                         style={{
                             border: `1px solid white`,
