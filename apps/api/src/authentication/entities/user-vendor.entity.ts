@@ -7,7 +7,10 @@ import {
     OneToMany,
     CreateDateColumn,
     Unique,
+    OneToOne,
+    JoinColumn,
 } from 'typeorm';
+import { UserImage } from './user-image.entity';
 
 @Entity()
 @Unique('UQ_email', ['email'])
@@ -33,4 +36,8 @@ export class UserVendor {
 
     @OneToMany(() => Booking, (booking) => booking.vendor)
     booking: Booking[];
+
+    @JoinColumn()
+    @OneToOne(() => UserImage, (userImg) => userImg.user, { cascade: true })
+    userImg: UserImage;
 }

@@ -17,6 +17,10 @@ export class MinioService {
         });
     }
 
+    generateFileName() {
+        return `${Date.now()}-${randomUUID()}`;
+    }
+
     getPublicUrl(bucket: string, fileName: string) {
         return `http://localhost:9000/${bucket}/${fileName}`;
     }
@@ -29,15 +33,20 @@ export class MinioService {
     }
 
     async uploadFile(bucket: string, file: Express.Multer.File) {
-        const fileName = `${Date.now()}-${randomUUID()}`;
+        const fileName = this.generateFileName();
 
-        return this.client.putObject(bucket, fileName, file.buffer);
+        await this.client.putObject(bucket, fileName, file.buffer);
+
+        return {
+            fileName,
+            bucket,
+        };
     }
 
     async uploadFiles(bucket: string, files: Express.Multer.File[]) {
         return Promise.all(
             files.map(async (file) => {
-                const fileName = `${Date.now()}-${randomUUID()}`;
+                const fileName = this.generateFileName();
 
                 await this.client.putObject(bucket, fileName, file.buffer);
 

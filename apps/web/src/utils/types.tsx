@@ -35,6 +35,7 @@ export interface VendorData {
     email: string;
     username: string;
     createdAt: Date;
+    userImg: string;
 }
 
 export enum UserTypes {

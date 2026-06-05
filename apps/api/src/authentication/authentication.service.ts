@@ -14,6 +14,7 @@ import { UserTypes } from 'src/utils/types/user-types';
 import { SignupData } from './dto/signup.dto';
 import { UserCustomer } from './entities/user-customer.entity';
 import { SigninData } from './dto/signin.dto';
+import { MinioService } from 'src/minio/minio.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -23,9 +24,13 @@ export class AuthenticationService {
         @InjectRepository(UserCustomer)
         private userCustomerRepository: Repository<UserCustomer>,
         private jwtService: JwtService,
+        private minioService: MinioService,
     ) {}
 
-    async signupVendor(signupVendorData: SignupVendorData) {
+    async signupVendor(
+        signupVendorData: SignupVendorData,
+        file: Express.Multer.File,
+    ) {
         const { password, username, email, ...rest } = signupVendorData;
 
         const isEmaiExists = await this.userVendorRepository.findOne({
@@ -56,12 +61,18 @@ export class AuthenticationService {
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        const userImage = await this.minioService.uploadFile(
+            'user-image',
+            file,
+        );
+
         try {
             return await this.userVendorRepository.save({
                 username,
                 email,
                 ...rest,
                 password: hashedPassword,
+                userImg: userImage,
             });
         } catch (e) {
             throw e;

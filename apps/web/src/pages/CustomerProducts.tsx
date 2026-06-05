@@ -73,18 +73,28 @@ export const CustomerProducts = () => {
                         padding: '10px',
                         display: 'flex',
                         flexDirection: 'row',
-
+                        height: '250px',
                         alignItems: 'center',
                         gap: '10px',
                     }}
                     key={vendor.id}
                 >
-                    <img
-                        src={placeholder}
+                    <div
                         style={{
                             width: '50%',
+                            height: '100%',
                         }}
-                    />
+                    >
+                        <img
+                            src={vendor.userImg || placeholder}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                            }}
+                        />
+                    </div>
+
                     <div
                         style={{
                             display: 'flex',

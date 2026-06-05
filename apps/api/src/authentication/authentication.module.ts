@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { VendorJwtStrategy } from './strategy/vendor-jwt.strategy';
 import { UserJwtStrategy } from './strategy/user-jwt.strategy';
 import { UserCustomer } from './entities/user-customer.entity';
+import { MinioService } from 'src/minio/minio.service';
 
 @Module({
     imports: [
@@ -16,6 +17,11 @@ import { UserCustomer } from './entities/user-customer.entity';
         }),
     ],
     controllers: [AuthenticationController],
-    providers: [AuthenticationService, VendorJwtStrategy, UserJwtStrategy],
+    providers: [
+        AuthenticationService,
+        VendorJwtStrategy,
+        UserJwtStrategy,
+        MinioService,
+    ],
 })
 export class AuthenticationModule {}

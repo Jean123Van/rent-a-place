@@ -69,13 +69,28 @@ export class ProductsService {
         });
     }
 
-    getAllVendors() {
-        return this.userVendorRepository
+    async getAllVendors() {
+        const vendors = await this.userVendorRepository
             .createQueryBuilder('vendor')
             .innerJoin('vendor.products', 'product')
+            .leftJoinAndSelect('vendor.userImg', 'userImg')
             .distinct(true)
             .orderBy('vendor.createdAt', 'DESC')
             .getMany();
+
+        return vendors.map((vendor) => {
+            return {
+                email: vendor.email,
+                id: vendor.id,
+                username: vendor.username,
+                userImg: vendor.userImg
+                    ? this.minioService.getPublicUrl(
+                          vendor.userImg.bucket,
+                          vendor.userImg.fileName,
+                      )
+                    : undefined,
+            };
+        });
     }
 
     bookProduct(userId: string, bookProductInput: BookProductData) {
