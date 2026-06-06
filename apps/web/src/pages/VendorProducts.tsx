@@ -81,8 +81,12 @@ export const VendorProducts = () => {
                     </span>
                 )}
                 {Array.from(
-                    { length: 10 },
-                    (_, i) => i + (renderedPageNum! - 9),
+                    { length: renderedPageNum! > 10 ? 10 : renderedPageNum! },
+                    (_, i) =>
+                        i +
+                        (renderedPageNum! >= 10
+                            ? renderedPageNum! - 9
+                            : renderedPageNum!),
                 ).map((pageNum) => (
                     <span
                         style={{
