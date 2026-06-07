@@ -55,8 +55,8 @@ export class ProductsController {
 
     @Get('/find-all/vendors')
     @UseGuards(UserAuthGuard)
-    getAllVendors() {
-        return this.productsService.getAllVendors();
+    getAllVendors(@Query() pagination: Pagination) {
+        return this.productsService.getAllVendors(pagination.page);
     }
 
     @Get('/vendor/:vendorId')

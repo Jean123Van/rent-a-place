@@ -54,6 +54,7 @@ export const PageList = ({
                         : renderedPageNum!),
             ).map((pageNum) => (
                 <span
+                    key={pageNum}
                     style={{
                         fontSize: '12px',
                         textDecoration: 'underline',

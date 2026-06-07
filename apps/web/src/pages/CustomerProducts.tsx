@@ -8,13 +8,17 @@ import { useNavigate } from 'react-router-dom';
 import { SomethingWentWrong } from '../components/Modal/SomethingWentWrong';
 import { NoResults } from '../components/Modal/NoResults';
 import { ListContainer } from '../components/container/ListContainer';
+import { useState } from 'react';
+import { PageList } from '../components/pagination/PageList';
 
 export const CustomerProducts = () => {
     const navigate = useNavigate();
 
+    const [currentPage, setCurrentPage] = useState(1);
+
     const { isLoading, data, isError } = useQuery({
-        queryKey: ['get-all', 'vendors'],
-        queryFn: getAllVendors,
+        queryKey: ['get-all', 'vendors', currentPage],
+        queryFn: () => getAllVendors(currentPage),
     });
 
     if (isError) {
@@ -47,7 +51,7 @@ export const CustomerProducts = () => {
         );
     }
 
-    if (data?.data.length === 0) {
+    if (data?.data.vendors.length === 0) {
         return (
             <div
                 style={{
@@ -64,7 +68,7 @@ export const CustomerProducts = () => {
 
     return (
         <ListContainer>
-            {data?.data.map((vendor: VendorData) => (
+            {data?.data.vendors.map((vendor: VendorData) => (
                 <div
                     style={{
                         border: `1px solid white`,
@@ -114,6 +118,13 @@ export const CustomerProducts = () => {
                     </div>
                 </div>
             ))}
+            <PageList
+                currentPage={currentPage}
+                onChange={(page) => {
+                    setCurrentPage(page);
+                }}
+                totalPages={data?.data.totalPages}
+            />
         </ListContainer>
     );
 };

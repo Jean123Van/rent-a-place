@@ -79,28 +79,36 @@ export class ProductsService {
         };
     }
 
-    async getAllVendors() {
-        const vendors = await this.userVendorRepository
+    async getAllVendors(page?: number) {
+        const pageNum = page || 1;
+        const limit = 10;
+
+        const [vendors, total] = await this.userVendorRepository
             .createQueryBuilder('vendor')
             .innerJoin('vendor.products', 'product')
             .leftJoinAndSelect('vendor.userImg', 'userImg')
             .distinct(true)
             .orderBy('vendor.createdAt', 'DESC')
-            .getMany();
+            .skip((pageNum - 1) * limit)
+            .limit(limit)
+            .getManyAndCount();
 
-        return vendors.map((vendor) => {
-            return {
-                email: vendor.email,
-                id: vendor.id,
-                username: vendor.username,
-                userImg: vendor.userImg
-                    ? this.minioService.getPublicUrl(
-                          vendor.userImg.bucket,
-                          vendor.userImg.fileName,
-                      )
-                    : undefined,
-            };
-        });
+        return {
+            vendors: vendors.map((vendor) => {
+                return {
+                    email: vendor.email,
+                    id: vendor.id,
+                    username: vendor.username,
+                    userImg: vendor.userImg
+                        ? this.minioService.getPublicUrl(
+                              vendor.userImg.bucket,
+                              vendor.userImg.fileName,
+                          )
+                        : undefined,
+                };
+            }),
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
     bookProduct(userId: string, bookProductInput: BookProductData) {
