@@ -17,6 +17,8 @@ import { SmallNote } from '../components/Text/SmallNote';
 export const CreateProduct = () => {
     const { addToast } = useToast();
 
+    // test commit
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [expandedImg, setExpandedImg] = useState<number | null>(null);
