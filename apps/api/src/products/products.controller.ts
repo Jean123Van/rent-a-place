@@ -73,7 +73,10 @@ export class ProductsController {
 
     @Get('/bookings/vendor')
     @UseGuards(VendorAuthGuard)
-    getBookingsByVendor(@Request() req) {
-        return this.productsService.getBookingsByVendor(req.user.id);
+    getBookingsByVendor(@Request() req, @Query() pagination: Pagination) {
+        return this.productsService.getBookingsByVendor(
+            req.user.id,
+            pagination.page,
+        );
     }
 }

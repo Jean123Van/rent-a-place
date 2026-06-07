@@ -56,9 +56,11 @@ export const getUserBookings = async () => {
     }
 };
 
-export const getVendorBookings = async () => {
+export const getVendorBookings = async (currentPage: number) => {
     try {
-        return await api.get('/products/bookings/vendor');
+        return await api.get('/products/bookings/vendor', {
+            params: { page: currentPage },
+        });
     } catch (e) {
         console.log(e);
     }

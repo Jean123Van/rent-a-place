@@ -5,11 +5,15 @@ import type { VendorBooking } from '../utils/types';
 import { NoResults } from '../components/Modal/NoResults';
 import { BaseContainer } from '../components/container/BaseContainer';
 import { ProductImageTile } from '../components/container/ProductImageTile';
+import { PageList } from '../components/pagination/PageList';
+import { useState } from 'react';
 
 export const VendorTransactions = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+
     const { data, isLoading } = useQuery({
-        queryKey: ['vendor', 'transactions'],
-        queryFn: getVendorBookings,
+        queryKey: ['vendor', 'transactions', currentPage],
+        queryFn: () => getVendorBookings(currentPage),
     });
 
     if (isLoading) {
@@ -27,7 +31,7 @@ export const VendorTransactions = () => {
         );
     }
 
-    if (data?.data.length === 0) {
+    if (data?.data.bookings.length === 0) {
         return <NoResults />;
     }
 
@@ -37,7 +41,8 @@ export const VendorTransactions = () => {
                 height: '100%',
                 padding: '30px 50px',
                 display: 'flex',
-                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
             }}
         >
             <div
@@ -47,9 +52,10 @@ export const VendorTransactions = () => {
                     gap: '13px',
                     display: 'flex',
                     flexDirection: 'column',
+                    marginBottom: '5px',
                 }}
             >
-                {data?.data.map((booking: VendorBooking) => (
+                {data?.data.bookings.map((booking: VendorBooking) => (
                     <BaseContainer
                         key={booking.id}
                         style={{
@@ -185,6 +191,11 @@ export const VendorTransactions = () => {
                     </BaseContainer>
                 ))}
             </div>
+            <PageList
+                currentPage={currentPage}
+                onChange={(page) => setCurrentPage(page)}
+                totalPages={data?.data.totalPages}
+            />
         </div>
     );
 };
