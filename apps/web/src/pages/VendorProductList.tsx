@@ -5,7 +5,7 @@ import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSp
 import { type BookProductForm, type ProductData } from '../utils/types';
 import { COLORS } from '../styles/colors';
 import { PrimaryButton } from '../components/button/PrimaryButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DateInput } from '../components/input/DateInput';
 import { FormInput } from '../components/input/FormInput';
 import { Controller, useForm } from 'react-hook-form';
@@ -15,8 +15,11 @@ import { useToast } from '../components/Toast/toastHook';
 import { ListContainer } from '../components/container/ListContainer';
 import { RowDetails } from '../components/Text/RowDetails';
 import { ProductImageTile } from '../components/container/ProductImageTile';
+import { PageList } from '../components/pagination/PageList';
 
 export const VendorProductList = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+
     const { addToast } = useToast();
 
     const { vendorId } = useParams();
@@ -54,8 +57,8 @@ export const VendorProductList = () => {
     });
 
     const { isLoading, data } = useQuery({
-        queryKey: ['vendor', 'product', 'list'],
-        queryFn: () => getProductsByVendor(vendorId!),
+        queryKey: ['vendor', 'product', 'list', vendorId, currentPage],
+        queryFn: () => getProductsByVendor(vendorId!, currentPage),
     });
 
     const handleBookBtn = (bookProductInput: BookProductForm) => {
@@ -92,6 +95,7 @@ export const VendorProductList = () => {
                         width: '100%',
                         display: 'flex',
                         top: '0',
+                        zIndex: 1,
                     }}
                     onClick={() => {
                         reset();
@@ -213,6 +217,13 @@ export const VendorProductList = () => {
                         </div>
                     </div>
                 ))}
+                <PageList
+                    currentPage={currentPage}
+                    onChange={(page) => {
+                        setCurrentPage(page);
+                    }}
+                    totalPages={data?.data.totalPages}
+                />
             </ListContainer>
         </>
     );

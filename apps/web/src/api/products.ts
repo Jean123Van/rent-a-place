@@ -26,9 +26,14 @@ export const getAllProducts = async (currentPage: number) => {
     }
 };
 
-export const getProductsByVendor = async (vendorId: string) => {
+export const getProductsByVendor = async (
+    vendorId: string,
+    currentPage?: number,
+) => {
     try {
-        return await apiCustomer.get(`products/vendor/${vendorId}`);
+        return await apiCustomer.get(`products/vendor/${vendorId}`, {
+            params: { page: currentPage },
+        });
     } catch (e) {
         console.log(e);
     }
