@@ -5,11 +5,15 @@ import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSp
 import { NoResults } from '../components/Modal/NoResults';
 import { BaseContainer } from '../components/container/BaseContainer';
 import { ProductImageTile } from '../components/container/ProductImageTile';
+import { useState } from 'react';
+import { PageList } from '../components/pagination/PageList';
 
 export const CustomerTransactions = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+
     const { data, isLoading } = useQuery({
-        queryKey: ['customer', 'bookings'],
-        queryFn: getUserBookings,
+        queryKey: ['customer', 'bookings', currentPage],
+        queryFn: () => getUserBookings(currentPage),
     });
 
     if (isLoading) {
@@ -27,7 +31,7 @@ export const CustomerTransactions = () => {
         );
     }
 
-    if (data?.data.length === 0) {
+    if (data?.data.bookings.length === 0) {
         return <NoResults />;
     }
 
@@ -49,7 +53,7 @@ export const CustomerTransactions = () => {
                     flexDirection: 'column',
                 }}
             >
-                {data?.data.map((booking: UserBooking) => (
+                {data?.data.bookings.map((booking: UserBooking) => (
                     <BaseContainer
                         key={booking.id}
                         style={{
@@ -171,6 +175,13 @@ export const CustomerTransactions = () => {
                         </div>
                     </BaseContainer>
                 ))}
+                <PageList
+                    currentPage={currentPage}
+                    onChange={(page) => {
+                        setCurrentPage(page);
+                    }}
+                    totalPages={data?.data.totalPages}
+                />
             </div>
         </div>
     );

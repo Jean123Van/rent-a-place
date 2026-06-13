@@ -113,7 +113,7 @@ export const Signup = () => {
                         </form>
                         <SmallNote style={{ color: 'white' }}>
                             Already have an account?
-                            <Link to="/signin">Login</Link> instead.
+                            <Link to="/signin"> Login</Link> instead.
                         </SmallNote>
                     </div>
                 )}

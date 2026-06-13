@@ -122,24 +122,32 @@ export class ProductsService {
         });
     }
 
-    async getBookingsByCustomer(userId: string) {
-        const bookings = await this.bookingRepository.find({
+    async getBookingsByCustomer(userId: string, page?: number) {
+        const pageNum = page || 1;
+        const limit = 10;
+
+        const [bookings, total] = await this.bookingRepository.findAndCount({
             relations: ['vendor', 'product', 'product.productImage'],
             where: { customer: { id: userId } },
+            skip: (pageNum - 1) * limit,
+            take: limit,
             order: { createdAt: 'DESC' },
         });
 
-        return bookings.map((booking) => {
-            const product = booking.product;
-            const newImages = this.minioService.getPublicUrls(
-                product.productImage,
-            );
+        return {
+            bookings: bookings.map((booking) => {
+                const product = booking.product;
+                const newImages = this.minioService.getPublicUrls(
+                    product.productImage,
+                );
 
-            return {
-                ...booking,
-                product: { ...product, productImage: newImages },
-            };
-        });
+                return {
+                    ...booking,
+                    product: { ...product, productImage: newImages },
+                };
+            }),
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
     async getBookingsByVendor(vendorId: string, page?: number) {

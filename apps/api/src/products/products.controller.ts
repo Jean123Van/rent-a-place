@@ -67,8 +67,11 @@ export class ProductsController {
 
     @Get('/bookings/customer')
     @UseGuards(UserAuthGuard)
-    getBookingsByCustomer(@Request() req) {
-        return this.productsService.getBookingsByCustomer(req.user.id);
+    getBookingsByCustomer(@Request() req, @Query() pagination: Pagination) {
+        return this.productsService.getBookingsByCustomer(
+            req.user.id,
+            pagination.page,
+        );
     }
 
     @Get('/bookings/vendor')

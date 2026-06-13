@@ -5,7 +5,7 @@ import { LoadingSpinner } from '../components/Animation/LoadingSpinner/LoadingSp
 import { type BookProductForm, type ProductData } from '../utils/types';
 import { COLORS } from '../styles/colors';
 import { PrimaryButton } from '../components/button/PrimaryButton';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DateInput } from '../components/input/DateInput';
 import { FormInput } from '../components/input/FormInput';
 import { Controller, useForm } from 'react-hook-form';

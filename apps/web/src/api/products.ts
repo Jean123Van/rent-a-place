@@ -53,9 +53,11 @@ export const bookProduct = async (bookProductInput: BookProductInput) => {
     }
 };
 
-export const getUserBookings = async () => {
+export const getUserBookings = async (currentPage: number) => {
     try {
-        return await apiCustomer.get('/products/bookings/customer');
+        return await apiCustomer.get('/products/bookings/customer', {
+            params: { page: currentPage },
+        });
     } catch (e) {
         console.log(e);
     }
