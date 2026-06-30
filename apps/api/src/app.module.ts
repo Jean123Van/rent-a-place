@@ -9,6 +9,7 @@ import { Booking } from './products/entities/bookings.entity';
 import { ProductImage } from './products/entities/product-image.entity';
 import { MinioModule } from './minio/minio.module';
 import { UserImage } from './authentication/entities/user-image.entity';
+import { ProductAvailability } from './products/entities/product-availability';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { UserImage } from './authentication/entities/user-image.entity';
                 Booking,
                 ProductImage,
                 UserImage,
+                ProductAvailability,
             ],
             synchronize: true,
         }),

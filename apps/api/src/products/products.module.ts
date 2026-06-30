@@ -7,10 +7,17 @@ import { UserVendor } from 'src/authentication/entities/user-vendor.entity';
 import { Booking } from './entities/bookings.entity';
 import { MinioService } from 'src/minio/minio.service';
 import { ProductImage } from './entities/product-image.entity';
+import { ProductAvailability } from './entities/product-availability';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Product, UserVendor, Booking, ProductImage]),
+        TypeOrmModule.forFeature([
+            Product,
+            UserVendor,
+            Booking,
+            ProductImage,
+            ProductAvailability,
+        ]),
     ],
     controllers: [ProductsController],
     providers: [ProductsService, MinioService],
