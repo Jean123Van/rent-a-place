@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+    ConflictException,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common';
 import { CreateProductData } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
@@ -18,7 +22,6 @@ export class ProductsService {
         private userVendorRepository: Repository<UserVendor>,
         @InjectRepository(Booking)
         private bookingRepository: Repository<Booking>,
-        @InjectRepository(ProductAvailability)
         private dataSource: DataSource,
         private minioService: MinioService,
     ) {}
@@ -120,15 +123,16 @@ export class ProductsService {
         const formattedStartDate = new Date(startDate);
         const formattedEndDate = new Date(endDate);
 
-        const result = await this.dataSource.transaction(async (manager) => {
-            const allBookings = await manager
+        return await this.dataSource.transaction(async (manager) => {
+            const bookingAvailabilities = await manager
                 .createQueryBuilder(ProductAvailability, 'product_availability')
                 .setLock('pessimistic_write')
                 .where(
-                    'product_availability.date >= :startDate AND product_availability.date < :endDate',
+                    'product_availability.date >= :startDate AND product_availability.date < :endDate AND product_availability.productId = :productId',
                     {
                         startDate: formattedStartDate,
                         endDate: formattedEndDate,
+                        productId,
                     },
                 )
                 .getMany();
@@ -138,41 +142,50 @@ export class ProductsService {
                 .where('id = :productId', { productId })
                 .getOne();
 
-            const duplicateStartDate = new Date(formattedStartDate);
+            if (!product) {
+                throw new NotFoundException('Product not found');
+            }
 
-            while (duplicateStartDate < formattedEndDate) {
-                const booking = allBookings.find(
+            const availabilityDate = new Date(formattedStartDate);
+
+            while (availabilityDate < formattedEndDate) {
+                const bookingAvailability = bookingAvailabilities.find(
                     (booking) =>
                         new Date(booking.date).getTime() ===
-                        duplicateStartDate.getTime(),
+                        availabilityDate.getTime(),
                 );
 
-                if (!booking) {
-                    allBookings.push({
-                        date: new Date(duplicateStartDate),
+                if (!bookingAvailability) {
+                    bookingAvailabilities.push({
+                        date: new Date(availabilityDate),
                         productId,
-                        totalUnits: product!.units,
+                        totalUnits: product.units,
                         totalBookings: 0,
                     });
                 }
 
-                duplicateStartDate.setDate(duplicateStartDate.getDate() + 1);
+                availabilityDate.setDate(availabilityDate.getDate() + 1);
             }
 
-            const updatedBookings = allBookings.map((booking) => {
-                if (booking.totalBookings + 1 > booking.totalUnits) {
-                    throw new ConflictException(
-                        `${booking.date} is fully booked`,
-                    );
-                }
+            const updatedBookingAvailabilities = bookingAvailabilities.map(
+                (booking) => {
+                    if (booking.totalBookings + 1 > booking.totalUnits) {
+                        throw new ConflictException(
+                            `${booking.date} is fully booked`,
+                        );
+                    }
 
-                return {
-                    ...booking,
-                    totalBookings: booking.totalBookings + 1,
-                };
-            });
+                    return {
+                        ...booking,
+                        totalBookings: booking.totalBookings + 1,
+                    };
+                },
+            );
 
-            await manager.save(ProductAvailability, updatedBookings);
+            await manager.save(
+                ProductAvailability,
+                updatedBookingAvailabilities,
+            );
             return await manager.save(Booking, {
                 ...rest,
                 startDate,
@@ -182,8 +195,6 @@ export class ProductsService {
                 product: { id: productId },
             });
         });
-
-        return result;
     }
 
     async getBookingsByCustomer(userId: string, page?: number) {
