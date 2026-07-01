@@ -6,7 +6,7 @@ import {
 import { CreateProductData } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { UserVendor } from 'src/authentication/entities/user-vendor.entity';
 import { BookProductData } from './dto/book-product.dto';
 import { Booking } from './entities/bookings.entity';
@@ -123,78 +123,98 @@ export class ProductsService {
         const formattedStartDate = new Date(startDate);
         const formattedEndDate = new Date(endDate);
 
-        return await this.dataSource.transaction(async (manager) => {
-            const bookingAvailabilities = await manager
-                .createQueryBuilder(ProductAvailability, 'product_availability')
-                .setLock('pessimistic_write')
-                .where(
-                    'product_availability.date >= :startDate AND product_availability.date < :endDate AND product_availability.productId = :productId',
-                    {
-                        startDate: formattedStartDate,
-                        endDate: formattedEndDate,
-                        productId,
-                    },
-                )
-                .getMany();
+        const maxRetries = 3;
 
-            const product = await manager
-                .createQueryBuilder(Product, 'product')
-                .where('id = :productId', { productId })
-                .getOne();
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                return await this.dataSource.transaction(async (manager) => {
+                    const bookingAvailabilities = await manager
+                        .createQueryBuilder(
+                            ProductAvailability,
+                            'product_availability',
+                        )
+                        .setLock('pessimistic_write')
+                        .where(
+                            'product_availability.date >= :startDate AND product_availability.date < :endDate AND product_availability.productId = :productId',
+                            {
+                                startDate: formattedStartDate,
+                                endDate: formattedEndDate,
+                                productId,
+                            },
+                        )
+                        .getMany();
 
-            if (!product) {
-                throw new NotFoundException('Product not found');
-            }
+                    const product = await manager
+                        .createQueryBuilder(Product, 'product')
+                        .where('id = :productId', { productId })
+                        .getOne();
 
-            const availabilityDate = new Date(formattedStartDate);
-
-            while (availabilityDate < formattedEndDate) {
-                const bookingAvailability = bookingAvailabilities.find(
-                    (booking) =>
-                        new Date(booking.date).getTime() ===
-                        availabilityDate.getTime(),
-                );
-
-                if (!bookingAvailability) {
-                    bookingAvailabilities.push({
-                        date: new Date(availabilityDate),
-                        productId,
-                        totalUnits: product.units,
-                        totalBookings: 0,
-                    });
-                }
-
-                availabilityDate.setDate(availabilityDate.getDate() + 1);
-            }
-
-            const updatedBookingAvailabilities = bookingAvailabilities.map(
-                (booking) => {
-                    if (booking.totalBookings + 1 > booking.totalUnits) {
-                        throw new ConflictException(
-                            `${booking.date} is fully booked`,
-                        );
+                    if (!product) {
+                        throw new NotFoundException('Product not found');
                     }
 
-                    return {
-                        ...booking,
-                        totalBookings: booking.totalBookings + 1,
-                    };
-                },
-            );
+                    const dateCursor = new Date(formattedStartDate);
 
-            await manager.save(
-                ProductAvailability,
-                updatedBookingAvailabilities,
-            );
-            return await manager.save(Booking, {
-                ...rest,
-                startDate,
-                endDate,
-                customer: { id: userId },
-                vendor: { id: vendorId },
-                product: { id: productId },
-            });
-        });
+                    const availabilityMap = new Map(
+                        bookingAvailabilities.map((bookingAvailability) => [
+                            bookingAvailability.date.getTime(),
+                            bookingAvailability,
+                        ]),
+                    );
+
+                    while (dateCursor < formattedEndDate) {
+                        if (!availabilityMap.has(dateCursor.getTime())) {
+                            bookingAvailabilities.push({
+                                date: new Date(dateCursor),
+                                productId,
+                                totalUnits: product.units,
+                                totalBookings: 0,
+                            });
+                        }
+
+                        dateCursor.setDate(dateCursor.getDate() + 1);
+                    }
+
+                    for (const bookingAvailability of bookingAvailabilities) {
+                        if (
+                            bookingAvailability.totalBookings + 1 >
+                            bookingAvailability.totalUnits
+                        ) {
+                            throw new ConflictException(
+                                `${bookingAvailability.date} is fully booked`,
+                            );
+                        }
+
+                        bookingAvailability.totalBookings++;
+                    }
+
+                    await manager.save(
+                        ProductAvailability,
+                        bookingAvailabilities,
+                    );
+                    return await manager.save(Booking, {
+                        ...rest,
+                        startDate,
+                        endDate,
+                        customer: { id: userId },
+                        vendor: { id: vendorId },
+                        product: { id: productId },
+                    });
+                });
+            } catch (err) {
+                if (!(err instanceof QueryFailedError)) {
+                    throw err;
+                }
+
+                if (err.driverError?.code !== '23505') {
+                    throw err;
+                }
+
+                if (attempt === maxRetries) {
+                    throw err;
+                }
+            }
+        }
     }
 
     async getBookingsByCustomer(userId: string, page?: number) {

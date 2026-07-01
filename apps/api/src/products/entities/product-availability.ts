@@ -1,5 +1,6 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, Unique } from 'typeorm';
 
+@Unique(['productId', 'date'])
 @Entity()
 export class ProductAvailability {
     @PrimaryGeneratedColumn('uuid')
